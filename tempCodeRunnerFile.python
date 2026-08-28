@@ -1,0 +1,19 @@
+import json
+
+def extract_case_timestamps(json_log_path, target_step):
+    """
+    Reads local raw Winlogbeat/Sysmon JSON log stream and finds the exact 
+    @timestamp for the process/event corresponding to target_step.
+    """
+    with open(json_log_path, 'r') as f:
+        for line in f:
+            log = json.loads(line)
+            # Match step command/process name in log payload
+            if "process" in log and target_step in str(log):
+                return log.get("@timestamp")
+    return None
+
+def print_case_timestamps(case_hosts):
+    for case_id, (json_log_path, target_step) in case_hosts.items():
+        ts = extract_case_timestamps(json_log_path, target_step)
+        print(f"'{case_id}': '{ts}'")

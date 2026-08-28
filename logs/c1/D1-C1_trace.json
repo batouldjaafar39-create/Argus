@@ -1,0 +1,196 @@
+{
+  "summary": {
+    "case_id": "D1-C1",
+    "condition": "C1",
+    "start_time": 1787581389.2067142,
+    "end_time": 1787581389.2155387,
+    "duration_seconds": 0.008824586868286133,
+    "queries_executed": [
+      "query_conn",
+      "query_dns",
+      "query_kerberos",
+      "query_dce_rpc",
+      "query_smb_files",
+      "query_smb_mapping"
+    ],
+    "branches_triggered": [
+      "dce_rpc",
+      "remote_access",
+      "smb"
+    ],
+    "rules_fired": [
+      "conn-winrm"
+    ],
+    "terminated_reason": null
+  },
+  "events": [
+    {
+      "event": "investigation_window",
+      "ts": 1787581389.206822,
+      "start_ts": 1588205198.0,
+      "end_ts": 1588208798.0,
+      "start_iso": "2020-04-30T00:06:38Z",
+      "end_iso": "2020-04-30T01:06:38Z",
+      "duration_seconds": 3600
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2068412,
+      "tool": "query_conn",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.2106407,
+      "tool": "query_conn",
+      "count": 134,
+      "matched_before_limit": 134,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2106555,
+      "tool": "query_dns",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.211968,
+      "tool": "query_dns",
+      "count": 32,
+      "matched_before_limit": 32,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2119772,
+      "tool": "query_kerberos",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.2129476,
+      "tool": "query_kerberos",
+      "count": 22,
+      "matched_before_limit": 22,
+      "errors_skipped": 0
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1787581389.2130387,
+      "branch": "dce_rpc"
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1787581389.21304,
+      "branch": "remote_access"
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1787581389.213041,
+      "branch": "smb"
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2130506,
+      "tool": "query_dce_rpc",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.2143965,
+      "tool": "query_dce_rpc",
+      "count": 66,
+      "matched_before_limit": 66,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2144034,
+      "tool": "query_smb_files",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.214869,
+      "tool": "query_smb_files",
+      "count": 6,
+      "matched_before_limit": 6,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1787581389.2148743,
+      "tool": "query_smb_mapping",
+      "args": {
+        "start_ts": 1588205198.0,
+        "end_ts": 1588208798.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1787581389.2152717,
+      "tool": "query_smb_mapping",
+      "count": 6,
+      "matched_before_limit": 6,
+      "errors_skipped": 0
+    },
+    {
+      "event": "rule_fired",
+      "ts": 1787581389.2154076,
+      "rule_id": "conn-winrm",
+      "description": "4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "attack_technique": "T1021.006",
+      "evidence_count": 4
+    },
+    {
+      "event": "dns_reviewed",
+      "ts": 1787581389.21541,
+      "count": 32
+    },
+    {
+      "event": "smb_mapping_reviewed",
+      "ts": 1787581389.215411,
+      "count": 6
+    }
+  ],
+  "final_report": {
+    "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+    "affected_entities": [
+      "SCRANTON"
+    ],
+    "evidence": [
+      "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+    ],
+    "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+    "attack_technique_mapping": [
+      "T1021.006"
+    ],
+    "confidence": "medium",
+    "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+  }
+}

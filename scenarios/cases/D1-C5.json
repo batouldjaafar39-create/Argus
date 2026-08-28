@@ -1,0 +1,10 @@
+{
+    "case_id": "D1-C5",
+    "dataset": "day1",
+    "initial_alert": {
+      "timestamp": "2020-04-30T00:06:39Z",
+      "source": "Endpoint & Network Security Monitoring Telemetry",
+      "host": "NASHUA",
+      "description": "Suspicious activity flagged on host NASHUA requiring investigation."
+    }
+  }

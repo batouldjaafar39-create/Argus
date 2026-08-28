@@ -1,0 +1,10 @@
+{
+    "case_id": "D2-C5",
+    "dataset": "day2",
+    "initial_alert": {
+      "timestamp": "2020-05-01T07:03:39Z",
+      "source": "Endpoint & Network Security Monitoring Telemetry",
+      "host": "NEWYORK",
+      "description": "Suspicious activity flagged on host NEWYORK requiring investigation."
+    }
+  }

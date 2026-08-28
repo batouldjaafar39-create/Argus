@@ -1,0 +1,10 @@
+{
+    "case_id": "D1-C6",
+    "dataset": "day1",
+    "initial_alert": {
+      "timestamp": "2020-04-30T00:06:38Z",
+      "source": "Endpoint & Network Security Monitoring Telemetry",
+      "host": "SCRANTON",
+      "description": "Suspicious activity flagged on host SCRANTON requiring investigation."
+    }
+  }
