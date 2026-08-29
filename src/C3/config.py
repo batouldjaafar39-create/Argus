@@ -18,7 +18,7 @@ class C3Config:
     # 300 seconds was unnecessarily expensive for a single malformed
     # response. Keep a generous limit, but JSON retries are handled
     # separately and do not replay the malformed response.
-    generation_timeout_s: int = 300
+    generation_timeout_s: int = 900
 
     # ------------------------------------------------------------------
     # llama-server
@@ -50,8 +50,8 @@ class C3Config:
     #   final_report
     #
     # A 4B model should not need hundreds of tokens of reasoning.
-    max_tokens: int = 512
-
+    max_tokens: int = 1536
+    max_final_report_tokens: int = 1024
     seed: int = 42
 
     # ------------------------------------------------------------------

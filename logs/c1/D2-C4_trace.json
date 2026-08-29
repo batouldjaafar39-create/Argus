@@ -1,0 +1,160 @@
+{
+  "summary": {
+    "case_id": "D2-C4",
+    "condition": "C1",
+    "start_time": 1788019128.5824566,
+    "end_time": 1788019128.5939083,
+    "duration_seconds": 0.01145172119140625,
+    "queries_executed": [
+      "query_conn",
+      "query_dns",
+      "query_kerberos",
+      "query_dce_rpc",
+      "query_smb_mapping"
+    ],
+    "branches_triggered": [
+      "dce_rpc",
+      "smb"
+    ],
+    "rules_fired": [],
+    "terminated_reason": null
+  },
+  "events": [
+    {
+      "event": "investigation_window",
+      "ts": 1788019128.5825183,
+      "start_ts": 1588317520.0,
+      "end_ts": 1588321120.0,
+      "start_iso": "2020-05-01T07:18:40Z",
+      "end_iso": "2020-05-01T08:18:40Z",
+      "duration_seconds": 3600
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.5825295,
+      "tool": "query_conn",
+      "args": {
+        "start_ts": 1588317520.0,
+        "end_ts": 1588321120.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.5904353,
+      "tool": "query_conn",
+      "count": 200,
+      "matched_before_limit": 452,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.5904462,
+      "tool": "query_dns",
+      "args": {
+        "start_ts": 1588317520.0,
+        "end_ts": 1588321120.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.5918279,
+      "tool": "query_dns",
+      "count": 21,
+      "matched_before_limit": 21,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.59184,
+      "tool": "query_kerberos",
+      "args": {
+        "start_ts": 1588317520.0,
+        "end_ts": 1588321120.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.5924275,
+      "tool": "query_kerberos",
+      "count": 4,
+      "matched_before_limit": 4,
+      "errors_skipped": 0
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1788019128.5925741,
+      "branch": "dce_rpc"
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1788019128.5925748,
+      "branch": "smb"
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.5925791,
+      "tool": "query_dce_rpc",
+      "args": {
+        "start_ts": 1588317520.0,
+        "end_ts": 1588321120.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.5933795,
+      "tool": "query_dce_rpc",
+      "count": 24,
+      "matched_before_limit": 24,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_skipped",
+      "ts": 1788019128.5933876,
+      "tool": "query_smb_files",
+      "reason": "no_log_for_host"
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.5933893,
+      "tool": "query_smb_mapping",
+      "args": {
+        "start_ts": 1588317520.0,
+        "end_ts": 1588321120.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.5937533,
+      "tool": "query_smb_mapping",
+      "count": 1,
+      "matched_before_limit": 1,
+      "errors_skipped": 0
+    },
+    {
+      "event": "dns_reviewed",
+      "ts": 1788019128.593868,
+      "count": 21
+    },
+    {
+      "event": "smb_mapping_reviewed",
+      "ts": 1788019128.5938687,
+      "count": 1
+    }
+  ],
+  "final_report": {
+    "finding": "No fixed detection rule fired for this host's Zeek evidence. This does not rule out compromise -- C1's rule set only covers a fixed list of structural lateral-movement/Kerberos abuse indicators, not the full range of possible activity.",
+    "affected_entities": [
+      "UTICA"
+    ],
+    "evidence": [],
+    "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+    "attack_technique_mapping": [],
+    "confidence": "low",
+    "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+  }
+}

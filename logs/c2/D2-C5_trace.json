@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "case_id": "D2-C5",
+    "condition": "C2",
+    "start_time": 1788019447.0801418,
+    "end_time": 1788019476.8461597,
+    "duration_seconds": 29.76601791381836,
+    "correction_round_count": 1,
+    "json_retry_count": 0,
+    "terminated_reason": null
+  },
+  "events": [
+    {
+      "event": "correction_round_start",
+      "ts": 1788019447.0801957,
+      "round": 1
+    },
+    {
+      "event": "llm_request",
+      "ts": 1788019447.0802014,
+      "round": 1,
+      "attempt": 0,
+      "prompt_chars": 1924
+    },
+    {
+      "event": "llm_response_raw",
+      "ts": 1788019476.8459895,
+      "round": 1,
+      "attempt": 0,
+      "raw_text": "<think>\n\n</think>\n\n{\"action\": \"final_report\", \"report\": {\n  \"finding\": \"Suspicious activity flagged on host NEWYORK\",\n  \"affected_entities\": [\"NEWYORK\"],\n  \"evidence\": [\"Suspicious activity flagged on host NEWYORK requiring investigation.\"],\n  \"interpretation\": \"The system host NEWYORK has been flagged for suspicious activity, indicating potential security threats or unauthorized access. Further investigation is required to determine the nature and scope of the suspicious activity.\",\n  \"attack_technique_mapping\": [],\n  \"confidence\": \"low\",\n  \"limitations\": \"No additional evidence or context is available to determine the specific nature of the suspicious activity. The alert does not provide details about the type of activity, involved entities, or potential threats.\"\n}}"
+    },
+    {
+      "event": "round_end",
+      "ts": 1788019476.8461611,
+      "round": 1,
+      "outcome": "final_report"
+    }
+  ],
+  "final_report": {
+    "finding": "Suspicious activity flagged on host NEWYORK",
+    "affected_entities": [
+      "NEWYORK"
+    ],
+    "evidence": [
+      "Suspicious activity flagged on host NEWYORK requiring investigation."
+    ],
+    "interpretation": "The system host NEWYORK has been flagged for suspicious activity, indicating potential security threats or unauthorized access. Further investigation is required to determine the nature and scope of the suspicious activity.",
+    "attack_technique_mapping": [],
+    "confidence": "low",
+    "limitations": "No additional evidence or context is available to determine the specific nature of the suspicious activity. The alert does not provide details about the type of activity, involved entities, or potential threats."
+  }
+}

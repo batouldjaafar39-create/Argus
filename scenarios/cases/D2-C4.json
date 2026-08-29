@@ -4,7 +4,7 @@
     "initial_alert": {
       "timestamp": "2020-05-01T07:18:40Z",
       "source": "Endpoint & Network Security Monitoring Telemetry",
-      "host": "UTICA-ONE-DRIVE",
+      "host": "UTICA",
       "description": "Suspicious activity flagged on host UTICA requiring investigation."
     }
   }

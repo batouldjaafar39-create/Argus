@@ -1,10 +1,10 @@
 {
   "summary": {
-    "case_id": "D1-C1",
+    "case_id": "D1-C6",
     "condition": "Argus",
-    "start_time": 1787937856.7060046,
-    "end_time": 1787938529.9801023,
-    "duration_seconds": 673.2740976810455,
+    "start_time": 1787940990.6712177,
+    "end_time": 1787941614.8267736,
+    "duration_seconds": 624.1555559635162,
     "planning_rounds": 2,
     "analyst_revisions": 1,
     "zeek_queries": 2,
@@ -19,12 +19,12 @@
   "events": [
     {
       "event": "planning_round_start",
-      "ts": 1787937856.7060335,
+      "ts": 1787940990.6712341,
       "round": 1
     },
     {
       "event": "llm_request",
-      "ts": 1787937856.7067912,
+      "ts": 1787940990.6721103,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
@@ -32,7 +32,7 @@
     },
     {
       "event": "llm_response_raw",
-      "ts": 1787937928.5018203,
+      "ts": 1787941055.9037719,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
@@ -40,7 +40,7 @@
     },
     {
       "event": "plan_created",
-      "ts": 1787937928.5020146,
+      "ts": 1787941055.903952,
       "round": 1,
       "hypotheses": [
         {
@@ -52,7 +52,7 @@
     },
     {
       "event": "ledger_result",
-      "ts": 1787937928.510504,
+      "ts": 1787941055.9140599,
       "round": 1,
       "index": 1,
       "evidence_id": "E001",
@@ -64,18 +64,18 @@
     },
     {
       "event": "planning_round_end",
-      "ts": 1787937928.5105143,
+      "ts": 1787941055.9140694,
       "round": 1,
       "follow_up_required": true
     },
     {
       "event": "planning_round_start",
-      "ts": 1787937928.5105236,
+      "ts": 1787941055.9140766,
       "round": 2
     },
     {
       "event": "llm_request",
-      "ts": 1787937928.5118341,
+      "ts": 1787941055.9155219,
       "phase": "planner",
       "round": 2,
       "attempt": 0,
@@ -83,7 +83,7 @@
     },
     {
       "event": "llm_response_raw",
-      "ts": 1787938099.3517337,
+      "ts": 1787941217.8495598,
       "phase": "planner",
       "round": 2,
       "attempt": 0,
@@ -91,7 +91,7 @@
     },
     {
       "event": "plan_created",
-      "ts": 1787938099.3519113,
+      "ts": 1787941217.849699,
       "round": 2,
       "hypotheses": [
         {
@@ -103,7 +103,7 @@
     },
     {
       "event": "ledger_result",
-      "ts": 1787938099.3537385,
+      "ts": 1787941217.8546195,
       "round": 2,
       "index": 1,
       "evidence_id": "E002",
@@ -115,13 +115,13 @@
     },
     {
       "event": "planning_round_end",
-      "ts": 1787938099.353742,
+      "ts": 1787941217.8546267,
       "round": 2,
       "follow_up_required": true
     },
     {
       "event": "llm_request",
-      "ts": 1787938099.3539262,
+      "ts": 1787941217.8550885,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
@@ -129,7 +129,7 @@
     },
     {
       "event": "llm_response_raw",
-      "ts": 1787938293.5146253,
+      "ts": 1787941400.719119,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
@@ -137,7 +137,7 @@
     },
     {
       "event": "verification",
-      "ts": 1787938293.5189962,
+      "ts": 1787941400.7194388,
       "revision": 0,
       "clean": false,
       "violations": [
@@ -151,7 +151,7 @@
     },
     {
       "event": "analyst_revision",
-      "ts": 1787938293.5189993,
+      "ts": 1787941400.7194405,
       "revision": 1,
       "violations": [
         "Field 'finding' contains a factual statement without an [E###] citation: 'Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration.'",
@@ -164,7 +164,7 @@
     },
     {
       "event": "llm_request",
-      "ts": 1787938293.5198305,
+      "ts": 1787941400.7196982,
       "phase": "analyst_revision",
       "round": 1,
       "attempt": 0,
@@ -172,7 +172,7 @@
     },
     {
       "event": "llm_response_raw",
-      "ts": 1787938529.9797516,
+      "ts": 1787941614.8265395,
       "phase": "analyst_revision",
       "round": 1,
       "attempt": 0,
@@ -180,7 +180,7 @@
     },
     {
       "event": "verification",
-      "ts": 1787938529.980064,
+      "ts": 1787941614.8267555,
       "revision": 1,
       "clean": true,
       "violations": []

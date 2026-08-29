@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "case_id": "D1-C5",
+    "condition": "C2",
+    "start_time": 1788019266.1173587,
+    "end_time": 1788019295.1976082,
+    "duration_seconds": 29.080249547958374,
+    "correction_round_count": 1,
+    "json_retry_count": 0,
+    "terminated_reason": null
+  },
+  "events": [
+    {
+      "event": "correction_round_start",
+      "ts": 1788019266.1174147,
+      "round": 1
+    },
+    {
+      "event": "llm_request",
+      "ts": 1788019266.117434,
+      "round": 1,
+      "attempt": 0,
+      "prompt_chars": 1922
+    },
+    {
+      "event": "llm_response_raw",
+      "ts": 1788019295.197443,
+      "round": 1,
+      "attempt": 0,
+      "raw_text": "<think>\n\n</think>\n\n{\"action\": \"final_report\", \"report\": {\n  \"finding\": \"Suspicious activity was flagged on the host NASHUA\",\n  \"affected_entities\": [\"NASHUA\"],\n  \"evidence\": [\"Suspicious activity flagged on host NASHUA requiring investigation.\"],\n  \"interpretation\": \"The system indicates that there may be some unusual or potentially malicious activity on the NASHUA host. However, the specific nature of the activity is not detailed in the alert.\",\n  \"attack_technique_mapping\": [],\n  \"confidence\": \"low\",\n  \"limitations\": \"The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity.\"\n}}"
+    },
+    {
+      "event": "round_end",
+      "ts": 1788019295.1976101,
+      "round": 1,
+      "outcome": "final_report"
+    }
+  ],
+  "final_report": {
+    "finding": "Suspicious activity was flagged on the host NASHUA",
+    "affected_entities": [
+      "NASHUA"
+    ],
+    "evidence": [
+      "Suspicious activity flagged on host NASHUA requiring investigation."
+    ],
+    "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the NASHUA host. However, the specific nature of the activity is not detailed in the alert.",
+    "attack_technique_mapping": [],
+    "confidence": "low",
+    "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+  }
+}

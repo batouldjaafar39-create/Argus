@@ -1,10 +1,10 @@
 {
   "summary": {
-    "case_id": "D1-C1",
+    "case_id": "D1-C2",
     "condition": "C2",
-    "start_time": 1788019151.3529997,
-    "end_time": 1788019180.5543373,
-    "duration_seconds": 29.201337575912476,
+    "start_time": 1788019180.5585482,
+    "end_time": 1788019207.403892,
+    "duration_seconds": 26.845343828201294,
     "correction_round_count": 1,
     "json_retry_count": 0,
     "terminated_reason": null
@@ -12,26 +12,26 @@
   "events": [
     {
       "event": "correction_round_start",
-      "ts": 1788019151.3530679,
+      "ts": 1788019180.5586083,
       "round": 1
     },
     {
       "event": "llm_request",
-      "ts": 1788019151.3530781,
+      "ts": 1788019180.558617,
       "round": 1,
       "attempt": 0,
       "prompt_chars": 1926
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788019180.5541182,
+      "ts": 1788019207.4037683,
       "round": 1,
       "attempt": 0,
       "raw_text": "<think>\n\n</think>\n\n{\"action\": \"final_report\", \"report\": {\n  \"finding\": \"Suspicious activity was flagged on the host SCRANTON\",\n  \"affected_entities\": [\"SCRANTON\"],\n  \"evidence\": [\"Suspicious activity flagged on host SCRANTON requiring investigation.\"],\n  \"interpretation\": \"The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.\",\n  \"attack_technique_mapping\": [],\n  \"confidence\": \"low\",\n  \"limitations\": \"The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity.\"\n}}"
     },
     {
       "event": "round_end",
-      "ts": 1788019180.5543394,
+      "ts": 1788019207.403894,
       "round": 1,
       "outcome": "final_report"
     }

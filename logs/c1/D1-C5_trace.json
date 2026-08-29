@@ -1,10 +1,10 @@
 {
   "summary": {
-    "case_id": "D1-C1",
+    "case_id": "D1-C5",
     "condition": "C1",
-    "start_time": 1788019128.3320134,
-    "end_time": 1788019128.3910584,
-    "duration_seconds": 0.05904507637023926,
+    "start_time": 1788019128.4407895,
+    "end_time": 1788019128.513319,
+    "duration_seconds": 0.07252955436706543,
     "queries_executed": [
       "query_conn",
       "query_dns",
@@ -26,113 +26,113 @@
   "events": [
     {
       "event": "investigation_window",
-      "ts": 1788019128.3321216,
-      "start_ts": 1588205198.0,
-      "end_ts": 1588208798.0,
-      "start_iso": "2020-04-30T00:06:38Z",
-      "end_iso": "2020-04-30T01:06:38Z",
+      "ts": 1788019128.4408338,
+      "start_ts": 1588205199.0,
+      "end_ts": 1588208799.0,
+      "start_iso": "2020-04-30T00:06:39Z",
+      "end_iso": "2020-04-30T01:06:39Z",
       "duration_seconds": 3600
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.332138,
+      "ts": 1788019128.440842,
       "tool": "query_conn",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3348985,
+      "ts": 1788019128.4461322,
       "tool": "query_conn",
-      "count": 134,
-      "matched_before_limit": 134,
+      "count": 200,
+      "matched_before_limit": 479,
       "errors_skipped": 0
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.334912,
+      "ts": 1788019128.4461458,
       "tool": "query_dns",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3364289,
+      "ts": 1788019128.4611356,
       "tool": "query_dns",
-      "count": 32,
-      "matched_before_limit": 32,
+      "count": 21,
+      "matched_before_limit": 21,
       "errors_skipped": 0
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.3364394,
+      "ts": 1788019128.4611452,
       "tool": "query_kerberos",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3495197,
+      "ts": 1788019128.4735217,
       "tool": "query_kerberos",
-      "count": 22,
-      "matched_before_limit": 22,
+      "count": 13,
+      "matched_before_limit": 13,
       "errors_skipped": 0
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.3496428,
+      "ts": 1788019128.4736369,
       "branch": "dce_rpc"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.349645,
+      "ts": 1788019128.4736373,
       "branch": "remote_access"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.3496454,
+      "ts": 1788019128.4736378,
       "branch": "smb"
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.349654,
+      "ts": 1788019128.473644,
       "tool": "query_dce_rpc",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3649416,
+      "ts": 1788019128.486213,
       "tool": "query_dce_rpc",
-      "count": 66,
-      "matched_before_limit": 66,
+      "count": 57,
+      "matched_before_limit": 57,
       "errors_skipped": 0
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.3649528,
+      "ts": 1788019128.4862258,
       "tool": "query_smb_files",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3766496,
+      "ts": 1788019128.499383,
       "tool": "query_smb_files",
       "count": 6,
       "matched_before_limit": 6,
@@ -140,25 +140,25 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.3766599,
+      "ts": 1788019128.4993944,
       "tool": "query_smb_mapping",
       "args": {
-        "start_ts": 1588205198.0,
-        "end_ts": 1588208798.0,
+        "start_ts": 1588205199.0,
+        "end_ts": 1588208799.0,
         "limit": 200
       }
     },
     {
       "event": "query_result",
-      "ts": 1788019128.3907962,
+      "ts": 1788019128.513011,
       "tool": "query_smb_mapping",
-      "count": 6,
-      "matched_before_limit": 6,
+      "count": 5,
+      "matched_before_limit": 5,
       "errors_skipped": 0
     },
     {
       "event": "rule_fired",
-      "ts": 1788019128.3909605,
+      "ts": 1788019128.5132172,
       "rule_id": "conn-winrm",
       "description": "4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
       "attack_technique": "T1021.006",
@@ -166,25 +166,25 @@
     },
     {
       "event": "dns_reviewed",
-      "ts": 1788019128.3909624,
-      "count": 32
+      "ts": 1788019128.5132189,
+      "count": 21
     },
     {
       "event": "smb_mapping_reviewed",
-      "ts": 1788019128.3909638,
-      "count": 6
+      "ts": 1788019128.5132194,
+      "count": 5
     }
   ],
   "final_report": {
     "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
     "affected_entities": [
-      "SCRANTON"
+      "NASHUA"
     ],
     "evidence": [
-      "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
-      "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
-      "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
-      "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      "[conn-winrm] {'uid': 'C0XYv11LLkSOaKmcOa', 'ts': 1588206809.274476, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CRTaeg2G66cIB9TRm6', 'ts': 1588206808.214094, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CjqEFp2wB12h7DEGt2', 'ts': 1588206807.77218, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CgFqEH2AArPQ4DLOYf', 'ts': 1588206806.283442, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
     ],
     "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
     "attack_technique_mapping": [

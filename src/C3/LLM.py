@@ -1,4 +1,4 @@
-from __future__ import annotations
+
 
 import json
 import subprocess
@@ -44,22 +44,29 @@ def _normalize_timestamp_args(args: object) -> dict:
     """Normalize model-generated scalar arguments to Zeek tool types."""
     if not isinstance(args, dict):
         return args
+
     normalized = dict(args)
+
     for field in ("start_ts", "end_ts"):
         value = normalized.get(field)
+
         if isinstance(value, str):
             parsed = value.strip()
+
             if parsed.endswith("Z"):
                 parsed = parsed[:-1] + "+00:00"
+
             try:
                 dt = datetime.fromisoformat(parsed)
+
                 if dt.tzinfo is None:
                     dt = dt.replace(tzinfo=timezone.utc)
+
                 normalized[field] = dt.timestamp()
+
             except ValueError:
                 pass
-    # DNS query type names are semantically equivalent to their numeric
-    # IANA values, but the Zeek query function requires qtype: int.
+
     qtype_names = {
         "A": 1,
         "NS": 2,
@@ -75,15 +82,17 @@ def _normalize_timestamp_args(args: object) -> dict:
     }
 
     qtype = normalized.get("qtype")
+
     if isinstance(qtype, str):
         normalized_name = qtype.strip().upper()
+
         if normalized_name in qtype_names:
             normalized["qtype"] = qtype_names[normalized_name]
 
-    for field in ("rcode",):
-        value = normalized.get(field)
-        if isinstance(value, str) and value.strip().isdigit():
-            normalized[field] = int(value.strip())
+    value = normalized.get("rcode")
+
+    if isinstance(value, str) and value.strip().isdigit():
+        normalized["rcode"] = int(value.strip())
 
     return normalized
 
@@ -106,6 +115,7 @@ def _parse_alert_timestamp(alert: dict) -> Optional[datetime]:
 
     try:
         parsed = datetime.fromisoformat(value)
+
     except ValueError:
         return None
 
@@ -115,8 +125,10 @@ def _parse_alert_timestamp(alert: dict) -> Optional[datetime]:
     return parsed.astimezone(timezone.utc)
 
 
-def _alert_window(alert: dict, config: C3Config) -> tuple[Optional[float], Optional[float]]:
-    """Return deterministic start/end timestamps derived from the alert."""
+def _alert_window(
+    alert: dict,
+    config: C3Config,
+) -> tuple[Optional[float], Optional[float]]:
 
     start = _parse_alert_timestamp(alert)
 
@@ -175,7 +187,7 @@ def build_system_prompt() -> str:
         '"affected_entities":["..."],'
         '"evidence":["..."],'
         '"interpretation":"...",'
-        '"attack_technique_mapping":[],'
+        '"attack_technique_mapping":[],' 
         '"confidence":"low",'
         '"limitations":"..."'
         '}}\n\n'
@@ -197,10 +209,17 @@ def build_system_prompt() -> str:
         "4. Produce a final report only when enough evidence exists or "
         "when further evidence is unnecessary.\n"
     )
+
+
+# ---------------------------------------------------------------------
+# Final-report prompt
+# ---------------------------------------------------------------------
+
 def build_final_report_prompt(
     alert: dict,
     evidence_summary: str,
 ) -> str:
+
     return (
         "/no_think\n"
         "You are the final SOC analyst for a C3 investigation.\n\n"
@@ -211,10 +230,20 @@ def build_final_report_prompt(
         "Do NOT call tools.\n"
         "Do NOT invent evidence IDs.\n\n"
 
+        "FINAL OUTPUT CONSTRAINTS:\n"
+        "- Produce the JSON immediately.\n"
+        "- Do not output <think> or reasoning.\n"
+        "- Keep finding and interpretation concise.\n"
+        "- affected_entities: at most 5 items.\n"
+        "- evidence: evidence IDs only.\n"
+        "- attack_technique_mapping: [] unless directly supported by evidence.\n"
+        "- Keep limitations to one short sentence.\n\n"
+
         "IMPORTANT EVIDENCE RULES:\n"
         "- You may cite ONLY evidence IDs explicitly listed below.\n"
         "- Do not use E001, E002, etc. unless that exact ID exists below.\n"
         "- The evidence field MUST contain only IDs from the supplied evidence.\n"
+        "- Use the actual evidence records below to determine the finding.\n"
         "- Do not call network activity suspicious merely because connections "
         "exist.\n"
         "- Only describe activity as suspicious/malicious if the evidence "
@@ -223,11 +252,13 @@ def build_final_report_prompt(
         "say so explicitly.\n"
         "- Do not invent IPs, hosts, ports, domains, users, timestamps, "
         "or ATT&CK techniques.\n"
-        "- Do not reproduce full Zeek records.\n\n"
+        "- Do not reproduce unnecessary full Zeek records in the final report.\n\n"
 
-        f"ALERT:\n{json.dumps(alert, ensure_ascii=False)}\n\n"
+        f"ALERT:\n"
+        f"{json.dumps(alert, ensure_ascii=False)}\n\n"
 
-        f"AVAILABLE EVIDENCE:\n{evidence_summary}\n\n"
+        f"AVAILABLE EVIDENCE:\n"
+        f"{evidence_summary}\n\n"
 
         "Return exactly this structure:\n"
         "{"
@@ -243,9 +274,10 @@ def build_final_report_prompt(
         "}"
         "}"
     )
-def _build_final_evidence_summary(events: list) -> str:
-    """Build the evidence available to the final analyst."""
 
+
+def _build_final_evidence_summary(events: list) -> str:
+    """Build a compact, deterministic evidence digest for final reporting."""
     lines = []
 
     for event in events:
@@ -253,27 +285,48 @@ def _build_final_evidence_summary(events: list) -> str:
             continue
 
         evidence_id = event.get("evidence_id")
-
         if not evidence_id:
-            continue
+            evidence_id = f"E{len(lines) + 1:03d}"
 
         tool = event.get("tool", "unknown")
         matched = event.get("matched_before_limit", 0)
         kept = event.get("kept_count", 0)
-        evidence = event.get("evidence", {})
+        evidence = event.get("evidence") or {}
+        records = evidence.get("records", []) if isinstance(evidence, dict) else []
+
+        # Keep the actual evidence, but remove large low-value fields that
+        # make final-report generation unnecessarily expensive for a small LLM.
+        compact_records = []
+        for record in records[:11]:
+            if not isinstance(record, dict):
+                continue
+            compact = {}
+            for key in (
+                "ts", "uid", "id_orig_h", "id_orig_p",
+                "id_resp_h", "id_resp_p", "proto", "service",
+                "duration", "conn_state", "history",
+                "orig_bytes", "resp_bytes",
+            ):
+                if key in record:
+                    compact[key] = record[key]
+            compact_records.append(compact)
 
         lines.append(
-            f"{evidence_id}:\n"
-            f"tool={tool}\n"
-            f"matched_before_limit={matched}\n"
-            f"records_available_to_model={kept}\n"
-            f"records={json.dumps(evidence, ensure_ascii=False)}"
+            f"{evidence_id}: tool={tool}; "
+            f"matched_before_limit={matched}; "
+            f"records_available_to_model={kept};\n"
+            f"records={json.dumps(compact_records, ensure_ascii=False, separators=(",", ":"))}"
         )
 
     if not lines:
         return "NO_EVIDENCE"
 
     return "\n\n".join(lines)
+
+
+# ---------------------------------------------------------------------
+# Initial user message
+# ---------------------------------------------------------------------
 
 def build_initial_user_message(
     alert: dict,
@@ -284,10 +337,12 @@ def build_initial_user_message(
     window_text = "No timestamp window is available."
 
     if start_ts is not None and end_ts is not None:
+
         start_dt = datetime.fromtimestamp(
             start_ts,
             tz=timezone.utc,
         )
+
         end_dt = datetime.fromtimestamp(
             end_ts,
             tz=timezone.utc,
@@ -350,15 +405,29 @@ def _bound_conversation(
 # LLM backend
 # ---------------------------------------------------------------------
 
-def _run_llama_cli(prompt: str, config: C3Config) -> str:
-
+def _run_llama_cli(
+    prompt: str,
+    config: C3Config,
+    max_tokens: Optional[int] = None,
+) -> str:
     if config.use_server:
-        return _run_via_server(prompt, config)
+        return _run_via_server(
+            prompt,
+            config,
+            max_tokens=max_tokens,
+        )
 
-    return _run_via_subprocess(prompt, config)
+    return _run_via_subprocess(
+        prompt,
+        config,
+        max_tokens=max_tokens,
+    )
 
-
-def _run_via_server(prompt: str, config: C3Config) -> str:
+def _run_via_server(
+    prompt: str,
+    config: C3Config,
+    max_tokens: Optional[int] = None,
+) -> str:
 
     _ensure_server(config)
 
@@ -369,7 +438,11 @@ def _run_via_server(prompt: str, config: C3Config) -> str:
 
     body = json.dumps({
         "prompt": prompt,
-        "n_predict": config.max_tokens,
+        "n_predict": (
+            max_tokens
+            if max_tokens is not None
+            else config.max_tokens
+        ),
         "temperature": config.temperature,
         "top_p": config.top_p,
         "top_k": config.top_k,
@@ -385,20 +458,24 @@ def _run_via_server(prompt: str, config: C3Config) -> str:
     )
 
     try:
+
         with urllib.request.urlopen(
             req,
             timeout=config.generation_timeout_s,
         ) as resp:
+
             payload = json.loads(
                 resp.read().decode("utf-8")
             )
 
     except urllib.error.URLError as exc:
+
         raise LlamaCliError(
             f"llama-server request failed: {exc}"
         ) from exc
 
     except TimeoutError as exc:
+
         raise LlamaCliError(
             f"llama-server generation timed out after "
             f"{config.generation_timeout_s}s"
@@ -429,10 +506,12 @@ def _server_is_up(config: C3Config) -> bool:
     )
 
     try:
+
         with urllib.request.urlopen(
             url,
             timeout=3,
         ) as resp:
+
             return resp.status == 200
 
     except (
@@ -440,6 +519,7 @@ def _server_is_up(config: C3Config) -> bool:
         TimeoutError,
         ConnectionError,
     ):
+
         return False
 
 
@@ -451,6 +531,7 @@ def _ensure_server(config: C3Config) -> None:
     )
 
     if key in _servers_confirmed_up or _server_is_up(config):
+
         _servers_confirmed_up.add(key)
         return
 
@@ -467,12 +548,14 @@ def _ensure_server(config: C3Config) -> None:
     ]
 
     if config.threads is not None:
+
         cmd += [
             "-t",
             str(config.threads),
         ]
 
     try:
+
         subprocess.Popen(
             cmd,
             stdout=subprocess.DEVNULL,
@@ -482,6 +565,7 @@ def _ensure_server(config: C3Config) -> None:
         )
 
     except FileNotFoundError as exc:
+
         raise LlamaCliError(
             f"llama-server binary not found at "
             f"'{config.llama_server_path}'."
@@ -495,6 +579,7 @@ def _ensure_server(config: C3Config) -> None:
     while time.monotonic() < deadline:
 
         if _server_is_up(config):
+
             _servers_confirmed_up.add(key)
             return
 
@@ -511,6 +596,7 @@ def _ensure_server(config: C3Config) -> None:
 def _run_via_subprocess(
     prompt: str,
     config: C3Config,
+    max_tokens: Optional[int] = None,
 ) -> str:
 
     cmd = [
@@ -520,7 +606,11 @@ def _run_via_subprocess(
         "-p",
         prompt,
         "-n",
-        str(config.max_tokens),
+        str(
+            max_tokens
+            if max_tokens is not None
+            else config.max_tokens
+        ),
         "-c",
         str(config.context_size),
         "--temp",
@@ -538,12 +628,14 @@ def _run_via_subprocess(
     ]
 
     if config.threads is not None:
+
         cmd += [
             "-t",
             str(config.threads),
         ]
 
     try:
+
         result = subprocess.run(
             cmd,
             capture_output=True,
@@ -552,12 +644,14 @@ def _run_via_subprocess(
         )
 
     except FileNotFoundError as exc:
+
         raise LlamaCliError(
             f"llama-cli binary not found at "
             f"'{config.llama_cli_path}'."
         ) from exc
 
     except subprocess.TimeoutExpired as exc:
+
         partial = (
             (exc.stdout or "")[-1000:]
             if exc.stdout
@@ -571,6 +665,7 @@ def _run_via_subprocess(
         ) from exc
 
     if result.returncode != 0:
+
         raise LlamaCliError(
             f"llama-cli exited with code "
             f"{result.returncode}. "
@@ -583,6 +678,7 @@ def _run_via_subprocess(
 
     if idx == -1:
         generated = stdout
+
     else:
         generated = stdout[
             idx + len(ASSISTANT_TAG):
@@ -605,14 +701,15 @@ def _extract_json(raw_text: str) -> dict:
     text = raw_text.strip()
 
     if not text:
+
         raise json.JSONDecodeError(
             "Empty model response",
             text,
             0,
         )
 
-    # Direct parse first.
     try:
+
         value = json.loads(text)
 
         if isinstance(value, dict):
@@ -621,7 +718,6 @@ def _extract_json(raw_text: str) -> dict:
     except json.JSONDecodeError:
         pass
 
-    # Try JSON inside markdown fences.
     if "```" in text:
 
         fenced_parts = text.split("```")
@@ -634,6 +730,7 @@ def _extract_json(raw_text: str) -> dict:
                 candidate = candidate[4:].strip()
 
             try:
+
                 value = json.loads(candidate)
 
                 if isinstance(value, dict):
@@ -642,7 +739,6 @@ def _extract_json(raw_text: str) -> dict:
             except json.JSONDecodeError:
                 continue
 
-    # Finally scan for a complete JSON object.
     decoder = json.JSONDecoder()
 
     candidates = []
@@ -653,6 +749,7 @@ def _extract_json(raw_text: str) -> dict:
             continue
 
         try:
+
             value, _end = decoder.raw_decode(
                 text[start:]
             )
@@ -667,7 +764,11 @@ def _extract_json(raw_text: str) -> dict:
         candidate
         for candidate in candidates
         if candidate.get("action")
-        in {"plan", "tool_call", "final_report"}
+        in {
+            "plan",
+            "tool_call",
+            "final_report",
+        }
     ]
 
     if action_candidates:
@@ -688,20 +789,22 @@ def _extract_json(raw_text: str) -> dict:
 # ---------------------------------------------------------------------
 
 def _alert_values(alert: dict) -> set[str]:
-    """Collect values explicitly present in the initial alert."""
 
     values: set[str] = set()
 
     def collect(value):
 
         if isinstance(value, str):
+
             values.add(value)
 
         elif isinstance(value, dict):
+
             for child in value.values():
                 collect(child)
 
         elif isinstance(value, list):
+
             for child in value:
                 collect(child)
 
@@ -714,19 +817,6 @@ def _sanitize_initial_tool_args(
     parsed: dict,
     alert: dict,
 ) -> tuple[dict, list[str]]:
-
-    """
-    Prevent the first LLM turn from inventing entity filters.
-
-    If the initial alert does not contain an IP, a first-turn src_ip
-    or dst_ip is removed.
-
-    If the initial alert does not contain a timestamp, timestamp
-    filters are not allowed either.
-
-    This is a deterministic safety boundary around the model, not
-    additional intelligence.
-    """
 
     cleaned = json.loads(
         json.dumps(parsed)
@@ -758,8 +848,6 @@ def _sanitize_initial_tool_args(
 
         value = args[key]
 
-        # Do not allow an IP/entity filter unless the value was
-        # explicitly present in the initial alert.
         if isinstance(value, str) and value not in alert_values:
 
             if key in {
@@ -803,6 +891,7 @@ def _validate_initial_tool_args(
             continue
 
         if value not in alert_values:
+
             raise ToolDispatchError(
                 f"Initial-turn argument '{key}={value}' "
                 "was not present in the initial alert. "
@@ -820,26 +909,8 @@ def _get_llm_json_with_retries(
     trace: C3Trace,
     iteration: int,
     alert: dict,
+    final_report_mode: bool = False,
 ) -> tuple[Optional[dict], Optional[str]]:
-
-    """
-    Generate one JSON action.
-
-    IMPORTANT:
-    A malformed model response is NOT appended to the conversation.
-
-    The old implementation did this:
-
-        conversation
-        + malformed response
-        + "please fix it"
-
-    That caused the 4B model to reason about its previous response
-    instead of simply producing JSON.
-
-    Each retry therefore starts from the original clean conversation
-    and receives a short deterministic correction instruction.
-    """
 
     base_prompt = conversation_with_prompt
 
@@ -852,11 +923,18 @@ def _get_llm_json_with_retries(
             attempt_prompt = base_prompt
 
         else:
-
-            attempt_prompt = (
-                base_prompt
-                + _format_message(
-                    "user",
+            if final_report_mode:
+                retry_instruction = (
+                    "FINAL JSON RETRY.\n"
+                    "Your previous output was incomplete or invalid.\n"
+                    "Do not output <think>.\n"
+                    "Do not explain.\n"
+                    "Return ONLY the complete final_report JSON object.\n"
+                    "Keep every field concise.\n"
+                    "The evidence field must contain evidence IDs only.\n"
+                )
+            else:
+                retry_instruction = (
                     "OUTPUT FORMAT ERROR.\n"
                     "Your previous response was not valid JSON.\n\n"
                     "Do not explain the error.\n"
@@ -866,6 +944,10 @@ def _get_llm_json_with_retries(
                     "If querying Zeek, prefer an unfiltered query "
                     "rather than inventing IP addresses.\n"
                 )
+
+            attempt_prompt = (
+                base_prompt
+                + _format_message("user", retry_instruction)
                 + ASSISTANT_TAG
                 + "\n"
             )
@@ -882,6 +964,11 @@ def _get_llm_json_with_retries(
             raw = _run_llama_cli(
                 attempt_prompt,
                 config,
+                max_tokens=(
+                    getattr(config, "max_final_report_tokens", 1024)
+                    if final_report_mode
+                    else config.max_tokens
+                ),
             )
 
         except LlamaCliError as exc:
@@ -928,10 +1015,6 @@ def _get_llm_json_with_retries(
             )
 
             return None, "json_parse_failure"
-
-        # -------------------------------------------------------------
-        # Initial-turn hallucination protection
-        # -------------------------------------------------------------
 
         if iteration == 1:
 
@@ -1094,12 +1177,8 @@ def run_c3_investigation(
         )
 
         # ---------------------------------------------------------
-        # Final-report turn for the normal 3-iteration C3 baseline
+        # Final-report turn
         # ---------------------------------------------------------
-        # With the default max_iterations=3, after two successful
-        # Zeek queries the third turn is dedicated to finalization.
-        # Explicit larger limits remain available for tests and
-        # controlled experiments.
 
         final_turn = (
             config.max_iterations <= 3
@@ -1110,6 +1189,7 @@ def run_c3_investigation(
         )
 
         if final_turn:
+
             evidence_summary = _build_final_evidence_summary(
                 trace.events
             )
@@ -1129,6 +1209,7 @@ def run_c3_investigation(
             )
 
         else:
+
             conversation_with_prompt = (
                 conversation
                 + ASSISTANT_TAG
@@ -1141,17 +1222,20 @@ def run_c3_investigation(
             trace,
             iteration,
             alert,
+            final_report_mode=final_turn,
         )
 
         if parsed is None:
 
             if failure_reason == "llm_call_failure":
+
                 reason_text = (
                     "The backend call itself failed before producing a usable "
                     "response. See llm_request_failed for details."
                 )
 
             elif failure_reason == "invalid_initial_tool_args":
+
                 reason_text = (
                     "The LLM repeatedly attempted to use entity "
                     "filters that were not present in the initial alert. "
@@ -1160,6 +1244,7 @@ def run_c3_investigation(
                 )
 
             else:
+
                 reason_text = (
                     "The LLM responded, but its output could not be "
                     "parsed as valid JSON after the configured retries."
@@ -1180,15 +1265,16 @@ def run_c3_investigation(
 
         action = parsed.get("action")
 
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
         # Final report
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
 
         if action == "final_report":
 
             report_raw = parsed.get("report")
 
             try:
+
                 validated = FinalReport.model_validate(
                     report_raw
                 )
@@ -1202,8 +1288,6 @@ def run_c3_investigation(
                     raw_report=report_raw,
                 )
 
-                # Keep the correction prompt compact, especially on
-                # the dedicated final-report turn.
                 conversation = (
                     conversation_with_prompt
                     + json.dumps(parsed)
@@ -1227,22 +1311,94 @@ def run_c3_investigation(
                     outcome="final_report_invalid",
                 )
 
-                # If this was the final allowed turn, do not fall through
-                # into an invalid extra iteration.
                 if iteration >= config.max_iterations:
+
                     trace.finish(
                         final_report=_fallback_report(
-                            f"Iteration limit ({config.max_iterations}) "
-                            "was reached before the model produced a valid final_report."
+                            "The model produced a final_report with an invalid "
+                            "schema on the final allowed iteration."
                         ),
                         terminated_reason="iteration_limit",
                     )
+
                     return trace
 
                 continue
 
+            # -----------------------------------------------------
+            # Evidence-ID validation
+            # -----------------------------------------------------
+
+            evidence_ids = {
+                event.get("evidence_id")
+                for event in trace.events
+                if (
+                    event.get("event") == "tool_result"
+                    and event.get("evidence_id")
+                )
+            }
+
+            report_dict = validated.model_dump()
+
+            supplied_evidence = report_dict.get(
+                "evidence",
+                [],
+            )
+
+            invalid_evidence = [
+                item
+                for item in supplied_evidence
+                if isinstance(item, str)
+                and item.startswith("E")
+                and item not in evidence_ids
+            ]
+
+            if invalid_evidence:
+
+                trace.log_event(
+                    "final_report_invalid_evidence",
+                    iteration=iteration,
+                    invalid_evidence=invalid_evidence,
+                    available_evidence=sorted(evidence_ids),
+                )
+
+                if iteration >= config.max_iterations:
+
+                    trace.finish(
+                        final_report=_fallback_report(
+                            "The final report referenced evidence IDs "
+                            "that were not produced by the investigation."
+                        ),
+                        terminated_reason="iteration_limit",
+                    )
+
+                    return trace
+
+                conversation = (
+                    conversation_with_prompt
+                    + json.dumps(parsed)
+                    + IM_END
+                    + "\n"
+                    + _format_message(
+                        "user",
+                        "FINAL REPORT EVIDENCE ERROR.\n"
+                        "Use ONLY evidence IDs explicitly supplied in "
+                        "AVAILABLE EVIDENCE.\n"
+                        f"Valid evidence IDs: {sorted(evidence_ids)}\n"
+                        "Return ONLY one final_report JSON object.",
+                    )
+                )
+
+                trace.log_event(
+                    "iteration_end",
+                    iteration=iteration,
+                    outcome="final_report_invalid_evidence",
+                )
+
+                continue
+
             trace.finish(
-                final_report=validated.model_dump(),
+                final_report=report_dict,
                 terminated_reason=None,
             )
 
@@ -1254,29 +1410,35 @@ def run_c3_investigation(
 
             return trace
 
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
         # Tool call
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
 
         if action == "tool_call":
 
             tool_name = parsed.get("tool")
             raw_args = parsed.get("args") or {}
-            args = _normalize_timestamp_args(raw_args)
 
-            # The alert-derived window is deterministic. If the model
-            # supplies timestamp filters, normalize them and constrain
-            # them to the authoritative investigation window.
+            args = _normalize_timestamp_args(
+                raw_args
+            )
+
+            # The alert-derived window is deterministic.
             if (
                 isinstance(args, dict)
                 and start_ts is not None
                 and end_ts is not None
-                and ("start_ts" in args or "end_ts" in args)
+                and (
+                    "start_ts" in args
+                    or "end_ts" in args
+                )
             ):
+
                 args["start_ts"] = float(start_ts)
                 args["end_ts"] = float(end_ts)
 
             if args != raw_args:
+
                 parsed = dict(parsed)
                 parsed["args"] = args
 
@@ -1288,6 +1450,7 @@ def run_c3_investigation(
             )
 
             try:
+
                 result = dispatch_tool_call(
                     tool_name,
                     args,
@@ -1327,9 +1490,9 @@ def run_c3_investigation(
 
                 continue
 
-            # ---------------------------------------------------------
+            # -----------------------------------------------------
             # Deterministic evidence truncation
-            # ---------------------------------------------------------
+            # -----------------------------------------------------
 
             truncated_result, trunc_event = truncate_tool_result(
                 tool_name,
@@ -1337,8 +1500,19 @@ def run_c3_investigation(
                 max_records=config.context_max_records,
                 max_chars=config.context_max_chars,
             )
-            successful_query_count = trace.zeek_query_count + 1
-            evidence_id = f"E{successful_query_count:03d}"
+
+            successful_query_count = (
+                trace.zeek_query_count + 1
+            )
+
+            evidence_id = (
+                f"E{successful_query_count:03d}"
+            )
+
+            # -----------------------------------------------------
+            # Store the ACTUAL retained evidence in the trace
+            # -----------------------------------------------------
+
             trace.log_event(
                 "tool_result",
                 iteration=iteration,
@@ -1353,10 +1527,11 @@ def run_c3_investigation(
                 kept_count=truncated_result.get(
                     "context_kept_count"
                 ),
-                 evidence=truncated_result,
+                evidence=truncated_result,
             )
 
             if trunc_event.reason != "none":
+
                 trace.log_event(
                     "context_truncated",
                     iteration=iteration,
@@ -1370,9 +1545,9 @@ def run_c3_investigation(
                     reason=trunc_event.reason,
                 )
 
-            # ---------------------------------------------------------
+            # -----------------------------------------------------
             # Add tool result to conversation
-            # ---------------------------------------------------------
+            # -----------------------------------------------------
 
             conversation = (
                 conversation_with_prompt
@@ -1395,21 +1570,23 @@ def run_c3_investigation(
                 config.conversation_max_chars,
             )
 
-            # C3 baseline policy: after two successful Zeek queries,
-            # require the next turn to produce the final report.
+            # -----------------------------------------------------
+            # C3 baseline policy
+            # -----------------------------------------------------
+
             if (
                 config.max_iterations <= 3
                 and trace.zeek_query_count >= 2
                 and iteration < config.max_iterations
             ):
+
                 conversation += _format_message(
                     "user",
                     "FINALIZATION REQUIRED. Two Zeek queries have now "
                     "completed successfully. Do not call another tool. "
                     "On your next turn return ONLY a compact final_report "
                     "JSON object. The evidence field must contain only "
-                    "evidence IDs or short evidence descriptions, never "
-                    "full Zeek records.",
+                    "evidence IDs from AVAILABLE EVIDENCE.",
                 )
 
             trace.log_event(
@@ -1420,9 +1597,9 @@ def run_c3_investigation(
 
             continue
 
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
         # Unknown action
-        # -------------------------------------------------------------
+        # ---------------------------------------------------------
 
         trace.log_event(
             "invalid_action",

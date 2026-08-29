@@ -1,0 +1,212 @@
+{
+  "summary": {
+    "case_id": "D2-C5",
+    "condition": "C1",
+    "start_time": 1788019128.5994375,
+    "end_time": 1788019128.6106524,
+    "duration_seconds": 0.011214971542358398,
+    "queries_executed": [
+      "query_conn",
+      "query_dns",
+      "query_kerberos",
+      "query_dce_rpc",
+      "query_smb_files",
+      "query_smb_mapping"
+    ],
+    "branches_triggered": [
+      "dce_rpc",
+      "remote_access",
+      "smb"
+    ],
+    "rules_fired": [
+      "conn-winrm",
+      "kerberos-auth-failure"
+    ],
+    "terminated_reason": null
+  },
+  "events": [
+    {
+      "event": "investigation_window",
+      "ts": 1788019128.599495,
+      "start_ts": 1588316619.0,
+      "end_ts": 1588320219.0,
+      "start_iso": "2020-05-01T07:03:39Z",
+      "end_iso": "2020-05-01T08:03:39Z",
+      "duration_seconds": 3600
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.5995047,
+      "tool": "query_conn",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.6033723,
+      "tool": "query_conn",
+      "count": 200,
+      "matched_before_limit": 314,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.6033814,
+      "tool": "query_dns",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.605847,
+      "tool": "query_dns",
+      "count": 153,
+      "matched_before_limit": 153,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.6058588,
+      "tool": "query_kerberos",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.6067636,
+      "tool": "query_kerberos",
+      "count": 62,
+      "matched_before_limit": 62,
+      "errors_skipped": 0
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1788019128.6068714,
+      "branch": "dce_rpc"
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1788019128.6068718,
+      "branch": "remote_access"
+    },
+    {
+      "event": "branch_triggered",
+      "ts": 1788019128.6068723,
+      "branch": "smb"
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.6068788,
+      "tool": "query_dce_rpc",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.6092887,
+      "tool": "query_dce_rpc",
+      "count": 200,
+      "matched_before_limit": 270,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.6093004,
+      "tool": "query_smb_files",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.6098576,
+      "tool": "query_smb_files",
+      "count": 9,
+      "matched_before_limit": 9,
+      "errors_skipped": 0
+    },
+    {
+      "event": "query_executed",
+      "ts": 1788019128.609864,
+      "tool": "query_smb_mapping",
+      "args": {
+        "start_ts": 1588316619.0,
+        "end_ts": 1588320219.0,
+        "limit": 200
+      }
+    },
+    {
+      "event": "query_result",
+      "ts": 1788019128.6103551,
+      "tool": "query_smb_mapping",
+      "count": 16,
+      "matched_before_limit": 16,
+      "errors_skipped": 0
+    },
+    {
+      "event": "rule_fired",
+      "ts": 1788019128.61057,
+      "rule_id": "conn-winrm",
+      "description": "9 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "attack_technique": "T1021.006",
+      "evidence_count": 9
+    },
+    {
+      "event": "rule_fired",
+      "ts": 1788019128.6105716,
+      "rule_id": "kerberos-auth-failure",
+      "description": "10 failed Kerberos authentication exchange(s) observed.",
+      "attack_technique": "T1558",
+      "evidence_count": 10
+    },
+    {
+      "event": "dns_reviewed",
+      "ts": 1788019128.6105726,
+      "count": 153
+    },
+    {
+      "event": "smb_mapping_reviewed",
+      "ts": 1788019128.610573,
+      "count": 16
+    }
+  ],
+  "final_report": {
+    "finding": "conn-winrm: 9 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985]. kerberos-auth-failure: 10 failed Kerberos authentication exchange(s) observed.",
+    "affected_entities": [
+      "NEWYORK"
+    ],
+    "evidence": [
+      "[conn-winrm] {'uid': 'CgFnQL2S08ECLnAIrc', 'ts': 1588317112.463299, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'ChVaKU3fZtvwBoAj15', 'ts': 1588317206.56029, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CDEU2O2pG46yNTMdb9', 'ts': 1588317111.380307, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CVcdtyR4Lh5hPUBF9', 'ts': 1588317206.572302, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[conn-winrm] {'uid': 'CBXRlmU0GnM02l3rl', 'ts': 1588317112.20467, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+      "[kerberos-auth-failure] {'uid': 'CaJPqD1eSDHkaTOPz2', 'ts': 1588317848.957557, 'client': None, 'service': 'DNS/prisoner.iana.org', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+      "[kerberos-auth-failure] {'uid': 'C1qoZA4YHwQZtc8aNg', 'ts': 1588317882.442715, 'client': None, 'service': 'cifs/DMEVALS.LOCAL', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+      "[kerberos-auth-failure] {'uid': 'CALtIP2Adva01hujaa', 'ts': 1588318171.514519, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+      "[kerberos-auth-failure] {'uid': 'CpcSMt4QJMG2lxqr0h', 'ts': 1588318171.536742, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+      "[kerberos-auth-failure] {'uid': 'CUyRyePXU7ZplZBKl', 'ts': 1588318171.541926, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}"
+    ],
+    "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+    "attack_technique_mapping": [
+      "T1021.006",
+      "T1558"
+    ],
+    "confidence": "high",
+    "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+  }
+}

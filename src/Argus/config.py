@@ -15,7 +15,7 @@ class ArgusConfig:
     model_hf_repo: str = "Qwen/Qwen3-4B-GGUF:Q4_K_M"
     context_size: int = 8192
     threads: Optional[int] = None
-    generation_timeout_s: int = 300
+    generation_timeout_s: int = 900
 
     use_server: bool = True
     llama_server_path: str = "llama-server"

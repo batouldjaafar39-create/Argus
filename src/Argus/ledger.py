@@ -9,11 +9,21 @@ from src.C3.context import truncate_tool_result
 from src.C3.tools import ToolDispatchError, dispatch_tool_call
 
 
-def _normalize_timestamp_args(args: Any) -> dict[str, Any]:
-    """Normalize ISO-8601 start/end timestamps to epoch floats for Zeek tools."""
+def _normalize_tool_args(tool_name: Any, args: Any) -> dict[str, Any]:
+    """Normalize common LLM-generated argument type mistakes before dispatch.
+
+    Qwen frequently emits semantically correct values using JSON strings, e.g.
+    ``"A"`` for DNS qtype or ``"true"`` for a Kerberos success flag.  The
+    deterministic Zeek dispatcher intentionally expects the concrete Python
+    types.  Normalization belongs at this boundary so the LLM remains free to
+    use natural JSON while tool execution stays type-safe.
+    """
     if not isinstance(args, dict):
-        return args
+        return {}
+
     normalized = dict(args)
+
+    # ISO-8601 timestamps -> epoch seconds.
     for field in ("start_ts", "end_ts"):
         value = normalized.get(field)
         if isinstance(value, str):
@@ -27,7 +37,49 @@ def _normalize_timestamp_args(args: Any) -> dict[str, Any]:
                 normalized[field] = dt.timestamp()
             except ValueError:
                 pass
+
+    # DNS qtype accepts the IANA numeric value.  Models often emit the
+    # mnemonic name because it is more readable.
+    qtype_names = {
+        "A": 1, "NS": 2, "MD": 3, "MF": 4, "CNAME": 5,
+        "SOA": 6, "PTR": 12, "MX": 15, "TXT": 16, "AAAA": 28,
+        "SRV": 33, "NAPTR": 35, "ANY": 255,
+    }
+    value = normalized.get("qtype")
+    if isinstance(value, str):
+        stripped = value.strip()
+        if stripped.upper() in qtype_names:
+            normalized["qtype"] = qtype_names[stripped.upper()]
+        elif stripped.isdigit():
+            normalized["qtype"] = int(stripped)
+
+    # DNS rcode is numeric.
+    value = normalized.get("rcode")
+    if isinstance(value, str) and value.strip().lstrip("-").isdigit():
+        normalized["rcode"] = int(value.strip())
+
+    # Boolean fields.  Do not use bool("false") because that is True.
+    for field in ("success",):
+        value = normalized.get(field)
+        if isinstance(value, str):
+            lowered = value.strip().casefold()
+            if lowered in {"true", "1", "yes"}:
+                normalized[field] = True
+            elif lowered in {"false", "0", "no"}:
+                normalized[field] = False
+
+    # Integer fields commonly emitted as strings.
+    for field in ("limit", "src_port", "dst_port", "orig_p", "resp_p"):
+        value = normalized.get(field)
+        if isinstance(value, str) and value.strip().lstrip("-").isdigit():
+            normalized[field] = int(value.strip())
+
     return normalized
+
+
+def _normalize_timestamp_args(args: Any) -> dict[str, Any]:
+    """Backward-compatible timestamp-only normalizer used by older callers."""
+    return _normalize_tool_args(None, args)
 
 
 @dataclass
@@ -65,7 +117,7 @@ class EvidenceLedger:
 
     def execute(self, tool_name: Any, args: Any) -> EvidenceEntry:
         evidence_id = f"E{len(self.entries) + 1:03d}"
-        args = _normalize_timestamp_args(args)
+        args = _normalize_tool_args(tool_name, args)
         try:
             result = dispatch_tool_call(tool_name, args, self.log_paths)
             bounded, trunc_event = truncate_tool_result(

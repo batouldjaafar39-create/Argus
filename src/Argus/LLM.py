@@ -32,13 +32,23 @@ def build_planner_prompt() -> str:
         "You may request multiple tool calls in one plan. The execution layer will run every call through the real dispatcher. "
         "Use only these tools and their arguments:\n"
         f"{json.dumps(tool_schemas_for_prompt(), indent=2)}\n"
-        "Do not include log_path. Do not include more calls than the system budget. "
+        "Do not include log_path. Do not make more calls than the system budget. "
         "The log files are already scoped to the alerted host. Do not use the alert hostname "
         "as src_ip or dst_ip; those filters accept IP addresses only. Omit host filters unless "
         "the alert contains an actual IP address. "
         "If the alert contains a timestamp, use that timestamp to constrain the first query to the "
         "investigation window supplied in the alert/context. Do not invent timestamps or IPs. "
-        "If existing evidence is sufficient, return an empty tool_calls list and follow_up_required=false."
+        "Use the smallest set of query arguments necessary to answer the hypothesis. Do NOT copy "
+        "uid, rcode, cipher, success, client, service, query, or other record-specific values into "
+        "a follow-up query unless that value is explicitly needed as a filter and is present in the "
+        "successful Ledger evidence. Prefer time-window and source/destination filters over exact-record "
+        "filters. Never fabricate a value merely to make a query more specific. "
+        "JSON TYPES ARE STRICT: qtype and rcode are integers; success is a JSON boolean; limit and "
+        "ports are integers; start_ts/end_ts may be ISO timestamps or epoch numbers. Never quote numeric "
+        "or boolean values. For DNS, use qtype 1 for A, 28 for AAAA, 12 for PTR, etc. "
+        "If a previous tool call failed, do not treat its evidence ID as evidence. Correct the argument "
+        "types and retry the query in the next plan when useful evidence can still be obtained. "
+        "Only set follow_up_required=false when no additional successful evidence is genuinely needed."
     )
 
 
@@ -236,14 +246,49 @@ def run_argus_investigation(
             args = call.get("args") if isinstance(call, dict) else None
             args = _remove_hostname_filters(args, alert)
             entry = ledger.execute(tool, args or {})
-            trace.log_event("ledger_result", round=planning_round, index=index, evidence_id=entry.evidence_id, tool=entry.tool, status=entry.status, error=entry.error, matched_before_limit=entry.matched_before_limit, context_kept_count=entry.context_kept_count)
+            trace.log_event(
+                "ledger_result",
+                round=planning_round,
+                index=index,
+                evidence_id=entry.evidence_id,
+                tool=entry.tool,
+                status=entry.status,
+                error=entry.error,
+                matched_before_limit=entry.matched_before_limit,
+                context_kept_count=entry.context_kept_count,
+            )
+
+        # Failed calls are not evidence.  Make that fact explicit in the
+        # planner history so the next round can repair them instead of
+        # blindly proceeding to the analyst with unusable EIDs.
+        new_entries = ledger.entries[-len(calls):] if calls else []
+        failed_entries = [e for e in new_entries if e.status == "failed"]
+        if failed_entries:
+            trace.log_event(
+                "tool_failures_require_recovery",
+                round=planning_round,
+                evidence_ids=[e.evidence_id for e in failed_entries],
+                errors=[e.error for e in failed_entries],
+            )
 
         follow_up = bool(parsed.get("follow_up_required"))
         trace.log_event("planning_round_end", round=planning_round, follow_up_required=follow_up)
         if not follow_up or planning_round >= config.max_planning_rounds:
             break
-        planner_history = (
-            _format_message("user", "The Ledger now contains the retrieved evidence. Re-plan only if additional evidence is genuinely needed.")
+        failed = [e for e in ledger.entries if e.status == "failed"]
+        recovery_note = ""
+        if failed:
+            recent = failed[-len(calls):] if calls else failed[-1:]
+            recovery_note = (
+                " Some previous tool calls failed and their evidence IDs are unusable. "
+                "If those queries are still needed, issue corrected calls with strict JSON types "
+                "and do not cite the failed evidence IDs. Errors: "
+                + json.dumps([e.error for e in recent])
+            )
+        planner_history = _format_message(
+            "user",
+            "The Ledger now contains the retrieved evidence. Re-plan only if additional evidence "
+            "is genuinely needed." + recovery_note,
         )
 
     # Analyst phase.
