@@ -2,9 +2,9 @@
   "summary": {
     "case_id": "D2-C3",
     "condition": "C1",
-    "start_time": 1788019128.5629575,
-    "end_time": 1788019128.5764027,
-    "duration_seconds": 0.013445138931274414,
+    "start_time": 1788103198.3019114,
+    "end_time": 1788103198.4359772,
+    "duration_seconds": 0.13406586647033691,
     "queries_executed": [
       "query_conn",
       "query_dns",
@@ -27,7 +27,7 @@
   "events": [
     {
       "event": "investigation_window",
-      "ts": 1788019128.563019,
+      "ts": 1788103198.3020155,
       "start_ts": 1588316619.0,
       "end_ts": 1588320219.0,
       "start_iso": "2020-05-01T07:03:39Z",
@@ -36,7 +36,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5630324,
+      "ts": 1788103198.3021057,
       "tool": "query_conn",
       "args": {
         "start_ts": 1588316619.0,
@@ -46,7 +46,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5674827,
+      "ts": 1788103198.329941,
       "tool": "query_conn",
       "count": 200,
       "matched_before_limit": 314,
@@ -54,7 +54,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.567491,
+      "ts": 1788103198.329957,
       "tool": "query_dns",
       "args": {
         "start_ts": 1588316619.0,
@@ -64,7 +64,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5706415,
+      "ts": 1788103198.3594885,
       "tool": "query_dns",
       "count": 153,
       "matched_before_limit": 153,
@@ -72,7 +72,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5706534,
+      "ts": 1788103198.3595273,
       "tool": "query_kerberos",
       "args": {
         "start_ts": 1588316619.0,
@@ -82,7 +82,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5720155,
+      "ts": 1788103198.3829687,
       "tool": "query_kerberos",
       "count": 62,
       "matched_before_limit": 62,
@@ -90,22 +90,22 @@
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.5721023,
+      "ts": 1788103198.3831005,
       "branch": "dce_rpc"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.5721033,
+      "ts": 1788103198.3831017,
       "branch": "remote_access"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.5721037,
+      "ts": 1788103198.3831024,
       "branch": "smb"
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5721102,
+      "ts": 1788103198.3831122,
       "tool": "query_dce_rpc",
       "args": {
         "start_ts": 1588316619.0,
@@ -115,7 +115,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5744612,
+      "ts": 1788103198.407602,
       "tool": "query_dce_rpc",
       "count": 200,
       "matched_before_limit": 270,
@@ -123,7 +123,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5744886,
+      "ts": 1788103198.407616,
       "tool": "query_smb_files",
       "args": {
         "start_ts": 1588316619.0,
@@ -133,7 +133,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5754347,
+      "ts": 1788103198.4119594,
       "tool": "query_smb_files",
       "count": 9,
       "matched_before_limit": 9,
@@ -141,7 +141,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5754445,
+      "ts": 1788103198.4119744,
       "tool": "query_smb_mapping",
       "args": {
         "start_ts": 1588316619.0,
@@ -151,7 +151,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5760593,
+      "ts": 1788103198.4354165,
       "tool": "query_smb_mapping",
       "count": 16,
       "matched_before_limit": 16,
@@ -159,7 +159,7 @@
     },
     {
       "event": "rule_fired",
-      "ts": 1788019128.576302,
+      "ts": 1788103198.435777,
       "rule_id": "conn-winrm",
       "description": "9 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
       "attack_technique": "T1021.006",
@@ -167,7 +167,7 @@
     },
     {
       "event": "rule_fired",
-      "ts": 1788019128.5763032,
+      "ts": 1788103198.4357805,
       "rule_id": "kerberos-auth-failure",
       "description": "10 failed Kerberos authentication exchange(s) observed.",
       "attack_technique": "T1558",
@@ -175,12 +175,12 @@
     },
     {
       "event": "dns_reviewed",
-      "ts": 1788019128.5763044,
+      "ts": 1788103198.435791,
       "count": 153
     },
     {
       "event": "smb_mapping_reviewed",
-      "ts": 1788019128.576305,
+      "ts": 1788103198.4357927,
       "count": 16
     }
   ],

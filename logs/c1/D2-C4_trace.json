@@ -2,9 +2,9 @@
   "summary": {
     "case_id": "D2-C4",
     "condition": "C1",
-    "start_time": 1788019128.5824566,
-    "end_time": 1788019128.5939083,
-    "duration_seconds": 0.01145172119140625,
+    "start_time": 1788103198.461186,
+    "end_time": 1788103198.4819453,
+    "duration_seconds": 0.02075934410095215,
     "queries_executed": [
       "query_conn",
       "query_dns",
@@ -22,7 +22,7 @@
   "events": [
     {
       "event": "investigation_window",
-      "ts": 1788019128.5825183,
+      "ts": 1788103198.4612527,
       "start_ts": 1588317520.0,
       "end_ts": 1588321120.0,
       "start_iso": "2020-05-01T07:18:40Z",
@@ -31,7 +31,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5825295,
+      "ts": 1788103198.4612663,
       "tool": "query_conn",
       "args": {
         "start_ts": 1588317520.0,
@@ -41,7 +41,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5904353,
+      "ts": 1788103198.4760604,
       "tool": "query_conn",
       "count": 200,
       "matched_before_limit": 452,
@@ -49,7 +49,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5904462,
+      "ts": 1788103198.4760761,
       "tool": "query_dns",
       "args": {
         "start_ts": 1588317520.0,
@@ -59,7 +59,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5918279,
+      "ts": 1788103198.478327,
       "tool": "query_dns",
       "count": 21,
       "matched_before_limit": 21,
@@ -67,7 +67,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.59184,
+      "ts": 1788103198.47834,
       "tool": "query_kerberos",
       "args": {
         "start_ts": 1588317520.0,
@@ -77,7 +77,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5924275,
+      "ts": 1788103198.4792922,
       "tool": "query_kerberos",
       "count": 4,
       "matched_before_limit": 4,
@@ -85,17 +85,17 @@
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.5925741,
+      "ts": 1788103198.4794385,
       "branch": "dce_rpc"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.5925748,
+      "ts": 1788103198.47944,
       "branch": "smb"
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5925791,
+      "ts": 1788103198.479451,
       "tool": "query_dce_rpc",
       "args": {
         "start_ts": 1588317520.0,
@@ -105,7 +105,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5933795,
+      "ts": 1788103198.4810903,
       "tool": "query_dce_rpc",
       "count": 24,
       "matched_before_limit": 24,
@@ -113,13 +113,13 @@
     },
     {
       "event": "query_skipped",
-      "ts": 1788019128.5933876,
+      "ts": 1788103198.4811044,
       "tool": "query_smb_files",
       "reason": "no_log_for_host"
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.5933893,
+      "ts": 1788103198.4811087,
       "tool": "query_smb_mapping",
       "args": {
         "start_ts": 1588317520.0,
@@ -129,7 +129,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.5937533,
+      "ts": 1788103198.4817438,
       "tool": "query_smb_mapping",
       "count": 1,
       "matched_before_limit": 1,
@@ -137,12 +137,12 @@
     },
     {
       "event": "dns_reviewed",
-      "ts": 1788019128.593868,
+      "ts": 1788103198.4818878,
       "count": 21
     },
     {
       "event": "smb_mapping_reviewed",
-      "ts": 1788019128.5938687,
+      "ts": 1788103198.481889,
       "count": 1
     }
   ],

@@ -13,7 +13,7 @@ class ArgusConfig:
 
     llama_cli_path: str = "llama-cli"
     model_hf_repo: str = "Qwen/Qwen3-4B-GGUF:Q4_K_M"
-    context_size: int = 8192
+    context_size: int = 32768
     threads: Optional[int] = None
     generation_timeout_s: int = 900
 
@@ -36,7 +36,7 @@ class ArgusConfig:
     max_revisions: int = 2
     max_tool_calls_per_plan: int = 6
 
-    context_max_records: int = 20
-    context_max_chars: int = 6000
-    prompt_max_chars: int = 12000
+    context_max_records: int = 40
+    context_max_chars: int = 16000
+    prompt_max_chars: int = 40000
     log_dir: Path = Path("logs/argus")

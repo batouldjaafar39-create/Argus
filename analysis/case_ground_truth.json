@@ -1,0 +1,1063 @@
+{
+  "D1-C1": {
+    "day": "day1",
+    "case_name": "Initial Access & Rapid Collection",
+    "step_range": "1.A - 2.B",
+    "step_count": 4,
+    "declared_step_count": 4,
+    "attack_technique_ids": [
+      "T1002",
+      "T1005",
+      "T1036",
+      "T1041",
+      "T1059",
+      "T1065",
+      "T1074",
+      "T1083",
+      "T1086",
+      "T1119",
+      "T1204"
+    ],
+    "steps": [
+      {
+        "step_id": "1.A",
+        "step_key": [
+          1,
+          "A"
+        ],
+        "stage": "Initial Breach",
+        "technique": "User Execution, Masquerading, Uncommonly Used Port ",
+        "description": "The scenario begins with an initial breach, where a legitimate user clicks (T1204) an executable payload (screensaver executable) masquerading as a benign word document (T1036). Once executed, the payload creates a C2 connection over port 1234 (T1065) using the RC4 cryptographic cipher .",
+        "source": "SCRANTON",
+        "target": "PUPY",
+        "attack_technique_ids": [
+          "T1036",
+          "T1065",
+          "T1204"
+        ]
+      },
+      {
+        "step_id": "1.B",
+        "step_key": [
+          1,
+          "B"
+        ],
+        "stage": "Initial Breach",
+        "technique": "Command-Line Interface,\nPowerShell",
+        "description": "pupy terminal -> CMD -> PowerShell\n\nThe attacker then uses the active C2 connection to spawn interactive cmd.exe (T1059) and powershell.exe (T1086) shells.",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1059",
+          "T1086"
+        ]
+      },
+      {
+        "step_id": "2.A",
+        "step_key": [
+          2,
+          "A"
+        ],
+        "stage": "Rapid Collection and Exfiltration",
+        "technique": "File and Directory Discovery,\nAutomated Collection, Data from Local System,\nData Compressed,\nData Staged",
+        "description": "The attacker runs a one-liner command to search for filesystem for document and media files (T1083, T1119), collecting (T1005) and compressing (T1002) content into a single file (T1074).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1002",
+          "T1005",
+          "T1074",
+          "T1083",
+          "T1119"
+        ]
+      },
+      {
+        "step_id": "2.A",
+        "step_key": [
+          2,
+          "A"
+        ],
+        "stage": "Rapid Collection and Exfiltration",
+        "technique": null,
+        "description": "pupy terminal <- CMD <- PowerShell",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": []
+      },
+      {
+        "step_id": "2.B",
+        "step_key": [
+          2,
+          "B"
+        ],
+        "stage": "Rapid Collection and Exfiltration",
+        "technique": "Exfiltration Over Command and Control Channel",
+        "description": "The file is then exfiltrated over the existing C2 connection (T1041).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1041"
+        ]
+      }
+    ]
+  },
+  "D1-C2": {
+    "day": "day1",
+    "case_name": "Toolkit Deployment & UAC Bypass",
+    "step_range": "3.A - 4.C",
+    "step_count": 6,
+    "declared_step_count": 6,
+    "attack_technique_ids": [
+      "T1016",
+      "T1027",
+      "T1032",
+      "T1033",
+      "T1043",
+      "T1057",
+      "T1063",
+      "T1069",
+      "T1071",
+      "T1082",
+      "T1083",
+      "T1086",
+      "T1088",
+      "T1105",
+      "T1106",
+      "T1107",
+      "T1112",
+      "T1122",
+      "T1140"
+    ],
+    "steps": [
+      {
+        "step_id": "3.A",
+        "step_key": [
+          3,
+          "A"
+        ],
+        "stage": "Deploy Stealth Toolkit",
+        "technique": "Remote File Copy,\nObfuscated Files or Information",
+        "description": "The attacker now uploads a new payload (T1105) to the victim. The payload is a legitimately formed image file with a concealed PowerShell script (T1027).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1027",
+          "T1105"
+        ]
+      },
+      {
+        "step_id": "3.B",
+        "step_key": [
+          3,
+          "B"
+        ],
+        "stage": "Deploy Stealth Toolkit",
+        "technique": "Component Object Model Hijacking,\nBypass User Account Control,\nCommonly Used Port,\nStandard Application Layer Protocol,\nStandard Cryptographic Protocol",
+        "description": "The attacker then elevates privileges via a user account control (UAC) bypass (T1122, T1088), which executes the newly added payload. A new C2 connection is established over port 443 (T1043) using the HTTPS protocol (T1071, T1032).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1032",
+          "T1043",
+          "T1071",
+          "T1088",
+          "T1122"
+        ]
+      },
+      {
+        "step_id": "3.C",
+        "step_key": [
+          3,
+          "C"
+        ],
+        "stage": "Deploy Stealth Toolkit",
+        "technique": "Modify Registry",
+        "description": "Finally, the attacker removes artifacts of the privilege escalation from the Registry (T1112).",
+        "source": "TEAM SERVER",
+        "target": "TEAM SERVER",
+        "attack_technique_ids": [
+          "T1112"
+        ]
+      },
+      {
+        "step_id": "4.A",
+        "step_key": [
+          4,
+          "A"
+        ],
+        "stage": "Defense Evasion and Discovery",
+        "technique": "PowerShell,\nDeobfuscate/Decode Files or Information",
+        "description": "The attacker uploads additional tools (T1086) through the new, elevated access before spawning an interactive powershell.exe shell (T1086). The additional tools are decompressed (T1140) and positioned on the target for usage.",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1086",
+          "T1140"
+        ]
+      },
+      {
+        "step_id": "4.B",
+        "step_key": [
+          4,
+          "B"
+        ],
+        "stage": "Defense Evasion and Discovery",
+        "technique": "Process Discovery,\nFile Deletion",
+        "description": "The attacker then enumerates running processes (T1057) to discover/terminate the initial access from Step 1 (Pupy Agent) before deleting various files (T1107) associated with that access.",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1057",
+          "T1107"
+        ]
+      },
+      {
+        "step_id": "4.C",
+        "step_key": [
+          4,
+          "C"
+        ],
+        "stage": "Defense Evasion and Discovery",
+        "technique": "File and Directory Discovery,\nSystem Owner/User Discovery,\nSystem Information Discovery,\nSystem Network Configuration Discovery,\nProcess Discovery,\nSecurity Software Discovery,\nPermission Groups Discovery,\nExecution through API",
+        "description": "Finally, the attacker launches a PowerShell script that performs a wide variety of reconnaissance commands (T1083, T1033, T1082, T1016, T1057, T1063, T1069), some of which are done by accessing the Windows API (T1106).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1016",
+          "T1033",
+          "T1057",
+          "T1063",
+          "T1069",
+          "T1082",
+          "T1083",
+          "T1106"
+        ]
+      }
+    ]
+  },
+  "D1-C3": {
+    "day": "day1",
+    "case_name": "Persistence & Credential Theft",
+    "step_range": "5.A - 6.C",
+    "step_count": 5,
+    "declared_step_count": 5,
+    "attack_technique_ids": [
+      "T1003",
+      "T1036",
+      "T1050",
+      "T1060",
+      "T1081",
+      "T1145"
+    ],
+    "steps": [
+      {
+        "step_id": "5.A",
+        "step_key": [
+          5,
+          "A"
+        ],
+        "stage": "Persistence",
+        "technique": "New Service ",
+        "description": "The attacker establishes two distinct means of persistent access to the victim by creating a new service (T1050) and creating a malicious payload in the Windows Startup folder (T1060)",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1050",
+          "T1060"
+        ]
+      },
+      {
+        "step_id": "5.B",
+        "step_key": [
+          5,
+          "B"
+        ],
+        "stage": "Persistence",
+        "technique": "Registry Run Keys / Startup Folder ",
+        "description": "The attacker establishes two distinct means of persistent access to the victim by creating a new service (T1050) and creating a malicious payload in the Windows Startup folder (T1060)",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1050",
+          "T1060"
+        ]
+      },
+      {
+        "step_id": "6.A",
+        "step_key": [
+          6,
+          "A"
+        ],
+        "stage": "Credentials Access",
+        "technique": "Credentials in Files,\nCredential Dumping,\nMasquerading",
+        "description": "The attacker accesses credentials stored in a local web browser (T1081, T1003) using a tool renamed to masquerade as a legitimate utility (T1036).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1003",
+          "T1036",
+          "T1081"
+        ]
+      },
+      {
+        "step_id": "6.B",
+        "step_key": [
+          6,
+          "B"
+        ],
+        "stage": "Credentials Access",
+        "technique": "Private Keys",
+        "description": "The attacker then harvests private keys (T1145)",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1145"
+        ]
+      },
+      {
+        "step_id": "6.C",
+        "step_key": [
+          6,
+          "C"
+        ],
+        "stage": "Credentials Access",
+        "technique": "Credential Dumping",
+        "description": "The attacker then harvests password hashes (T1003).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1003"
+        ]
+      }
+    ]
+  },
+  "D1-C4": {
+    "day": "day1",
+    "case_name": "Lateral Movement to NASHUA",
+    "step_range": "7.A - 8.C",
+    "step_count": 5,
+    "declared_step_count": 5,
+    "attack_technique_ids": [
+      "T1002",
+      "T1005",
+      "T1018",
+      "T1022",
+      "T1028",
+      "T1035",
+      "T1045",
+      "T1048",
+      "T1056",
+      "T1057",
+      "T1077",
+      "T1078",
+      "T1113",
+      "T1115"
+    ],
+    "steps": [
+      {
+        "step_id": "7.A",
+        "step_key": [
+          7,
+          "A"
+        ],
+        "stage": "Collection and Exfiltration",
+        "technique": "Screen Capture,\nClipboard Data,\nInput Capture",
+        "description": "The attacker collects screenshots (T1113), data from the user\u2019s clipboard (T1115), and keystrokes (T1056).",
+        "source": "TEAM SERVER",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1056",
+          "T1113",
+          "T1115"
+        ]
+      },
+      {
+        "step_id": "7.B",
+        "step_key": [
+          7,
+          "B"
+        ],
+        "stage": "Collection and Exfiltration",
+        "technique": "Data from Local System,\nData Compressed,\nData Encrypted,\nExfiltration Over Alternative Protocol",
+        "description": "The attacker then collects files (T1005), which are compressed (T1002) and encrypted (T1022), before being exfiltrated to an attacker-controlled WebDAV share (T1048).",
+        "source": "SCRANTON",
+        "target": "TEAM SERVER",
+        "attack_technique_ids": [
+          "T1002",
+          "T1005",
+          "T1022",
+          "T1048"
+        ]
+      },
+      {
+        "step_id": "8.A",
+        "step_key": [
+          8,
+          "A"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Remote System Discovery,\nWindows Remote Management,\nProcess Discovery",
+        "description": "The attacker uses Lightweight Directory Access Protocol (LDAP) queries to enumerate other hosts in the domain (T1018) before creating a remote PowerShell session to a secondary victim (T1028). Through this connection, the attacker enumerates running processes (T1057).",
+        "source": "SCRANTON",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1018",
+          "T1028",
+          "T1057"
+        ]
+      },
+      {
+        "step_id": "8.B",
+        "step_key": [
+          8,
+          "B"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Software Packing",
+        "description": "Next, the attacker uploads a new UPX-packed payload (T1045) to the secondary victim.",
+        "source": "SCRANTON",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1045"
+        ]
+      },
+      {
+        "step_id": "8.C",
+        "step_key": [
+          8,
+          "C"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Windows Admin Shares,\nService Execution,\nValid Accounts",
+        "description": "This new payload is executed on the secondary victim via the PSExec utility (T1077, T1035) using the previously stolen credentials (T1078).",
+        "source": "SCRANTON",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1035",
+          "T1077",
+          "T1078"
+        ]
+      }
+    ]
+  },
+  "D1-C5": {
+    "day": "day1",
+    "case_name": "Secondary Host Collection (NASHUA)",
+    "step_range": "9.A - 9.C",
+    "step_count": 3,
+    "declared_step_count": 3,
+    "attack_technique_ids": [
+      "T1002",
+      "T1005",
+      "T1022",
+      "T1041",
+      "T1074",
+      "T1083",
+      "T1086",
+      "T1105",
+      "T1107",
+      "T1119"
+    ],
+    "steps": [
+      {
+        "step_id": "9.A",
+        "step_key": [
+          9,
+          "A"
+        ],
+        "stage": "Collection",
+        "technique": "Remote File Copy",
+        "description": "The attacker uploads additional utilities to the secondary victim (T1105)",
+        "source": "TEAM SERVER",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1105"
+        ]
+      },
+      {
+        "step_id": "9.B",
+        "step_key": [
+          9,
+          "B"
+        ],
+        "stage": "Collection",
+        "technique": "PowerShell,\nFile and Directory Discovery,\nAutomated Collection,\nData from Local System,\nData Encrypted,\nData Compressed,\nData Staged,\nExfiltration Over Command and Control Channel",
+        "description": "The attacker runs a PowerShell one-liner command (T1086) to search for filesystem for document and media files (T1083, T1119). Files of interested are collected (T1005) then encrypted (T1022) and compressed (T1002) into a single file (T1074). The file this then exfiltrated over the existing C2 connection (T1041).",
+        "source": "TEAM SERVER",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1002",
+          "T1005",
+          "T1022",
+          "T1041",
+          "T1074",
+          "T1083",
+          "T1086",
+          "T1119"
+        ]
+      },
+      {
+        "step_id": "9.C",
+        "step_key": [
+          9,
+          "C"
+        ],
+        "stage": "Collection",
+        "technique": "File Deletion",
+        "description": "Finally, the attacker deletes various files (T1107) associated with that access",
+        "source": "TEAM SERVER",
+        "target": "NASHUA",
+        "attack_technique_ids": [
+          "T1107"
+        ]
+      }
+    ]
+  },
+  "D1-C6": {
+    "day": "day1",
+    "case_name": "Reboot Persistence Trigger",
+    "step_range": "10.A - 10.B",
+    "step_count": 2,
+    "declared_step_count": 2,
+    "attack_technique_ids": [
+      "T1035",
+      "T1060",
+      "T1106",
+      "T1134"
+    ],
+    "steps": [
+      {
+        "step_id": "10.A",
+        "step_key": [
+          10,
+          "A"
+        ],
+        "stage": "Persistence & Execution",
+        "technique": "Service Execution,\nRegistry Run Keys / Startup Folder ",
+        "description": "The original victim is rebooted and the legitimate user logs in, emulating ordinary usage and a passage of time. This activity triggers the previously established persistence mechanisms, namely the execution of the new service (T1035) and payload in the Windows Startup folder (T1060).",
+        "source": "SCRANTON",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1035",
+          "T1060"
+        ]
+      },
+      {
+        "step_id": "10.B",
+        "step_key": [
+          10,
+          "B"
+        ],
+        "stage": "Persistence & Execution",
+        "technique": "Registry Run Keys / Startup Folder ",
+        "description": "The payload in the Startup folder executes a follow-on payload using a stolen token (T1106, T1134).",
+        "source": "SCRANTON",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1106",
+          "T1134"
+        ]
+      }
+    ]
+  },
+  "D2-C1": {
+    "day": "day2",
+    "case_name": "Spearphishing & Local Enumeration",
+    "step_range": "11.A - 13.D",
+    "step_count": 8,
+    "declared_step_count": 8,
+    "attack_technique_ids": [
+      "T1012",
+      "T1016",
+      "T1032",
+      "T1033",
+      "T1043",
+      "T1057",
+      "T1060",
+      "T1063",
+      "T1071",
+      "T1082",
+      "T1083",
+      "T1086",
+      "T1096",
+      "T1099",
+      "T1120",
+      "T1140",
+      "T1204",
+      "T1497"
+    ],
+    "steps": [
+      {
+        "step_id": "11.A",
+        "step_key": [
+          11,
+          "A"
+        ],
+        "stage": "Initial Breach",
+        "technique": "User Execution,\nNTFS File Attributes,\nVirtualization/Sandbox Evasion,\nSystem Information Discovery,\nPeripheral Device Discovery,\nSystem Owner/User Discovery,\nSystem Network Configuration Discovery,\nProcess Discovery,\nFile and Directory Discovery,\nRegistry Run Keys / Startup Folder,\nDeobfuscate/Decode Files or Information,\nPowerShell,\nCommonly Used Port,\nStandard Application Layer Protocol,\nStandard Cryptographic Protocol",
+        "description": "The scenario begins with initial breach, where a legitimate user clicks (T1204) a link file payload, which executes an alternate data stream (ADS) hidden on another dummy file (T1096) delivered as part of the spearphishing campaign. The ADS performs a series of enumeration commands to ensure it is not executing in a virtualized analysis environment (T1497, T1082, T1120, T1033, T1016, T1057, T1083) before establishing persistence via a Windows Registry Run key entry (T1060) pointing to an embedded DLL payload that was decoded and dropped to disk (T1140). The ADS then executes a PowerShell stager (T1086) which creates a C2 connection over port 443 (T1043) using the HTTPS protocol (T1071, T1032).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1016",
+          "T1032",
+          "T1033",
+          "T1043",
+          "T1057",
+          "T1060",
+          "T1071",
+          "T1082",
+          "T1083",
+          "T1086",
+          "T1096",
+          "T1120",
+          "T1140",
+          "T1204",
+          "T1497"
+        ]
+      },
+      {
+        "step_id": "12.A",
+        "step_key": [
+          12,
+          "A"
+        ],
+        "stage": "Fortify Access",
+        "technique": "Timestomp,\nFile and Directory Discovery",
+        "description": "The attacker modifies the time attributes of the DLL payload (T1099) used in the previously established persistence mechanism to match that of a random file found in the victim\u2019s System32 directory (T1083).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1083",
+          "T1099"
+        ]
+      },
+      {
+        "step_id": "12.B",
+        "step_key": [
+          12,
+          "B"
+        ],
+        "stage": "Fortify Access",
+        "technique": "Security Software Discovery",
+        "description": "The attacker then enumerates registered AV products (T1063)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1063"
+        ]
+      },
+      {
+        "step_id": "12.C",
+        "step_key": [
+          12,
+          "C"
+        ],
+        "stage": "Fortify Access",
+        "technique": "Query Registry",
+        "description": "The attacker then enumerates software installed by the user documented in the Windows Registry (T1012)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1012"
+        ]
+      },
+      {
+        "step_id": "13.A",
+        "step_key": [
+          13,
+          "A"
+        ],
+        "stage": "Local Enumeration",
+        "technique": "System Information Discovery ",
+        "description": "The attacker performs local enumeration using various Windows API calls, specifically gathering the local computer name (T1082).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1082"
+        ]
+      },
+      {
+        "step_id": "13.B",
+        "step_key": [
+          13,
+          "B"
+        ],
+        "stage": "Local Enumeration",
+        "technique": "Security Software Discovery",
+        "description": "The attacker performs local enumeration using various Windows API calls, specifically gathering domain name (T1063)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1063"
+        ]
+      },
+      {
+        "step_id": "13.C",
+        "step_key": [
+          13,
+          "C"
+        ],
+        "stage": "Local Enumeration",
+        "technique": "System Owner/User Discovery",
+        "description": "The attacker performs local enumeration using various Windows API calls, specifically gathering current user context (T1033)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1033"
+        ]
+      },
+      {
+        "step_id": "13.D",
+        "step_key": [
+          13,
+          "D"
+        ],
+        "stage": "Local Enumeration",
+        "technique": "Process Discovery",
+        "description": "The attacker performs local enumeration using various Windows API calls, specifically gathering running processes (T1057).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1057"
+        ]
+      }
+    ]
+  },
+  "D2-C2": {
+    "day": "day2",
+    "case_name": "Privilege Escalation & Mimikatz",
+    "step_range": "14.A - 15.A",
+    "step_count": 3,
+    "declared_step_count": 3,
+    "attack_technique_ids": [
+      "T1003",
+      "T1027",
+      "T1033",
+      "T1047",
+      "T1057",
+      "T1084",
+      "T1088",
+      "T1105",
+      "T1122",
+      "T1140"
+    ],
+    "steps": [
+      {
+        "step_id": "14.A",
+        "step_key": [
+          14,
+          "A"
+        ],
+        "stage": "Elevation",
+        "technique": "Component Object Model Hijacking,\nBypass User Account Control ",
+        "description": "The attacker elevates privileges via a user account control (UAC) bypass (T1122, T1088).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1088",
+          "T1122"
+        ]
+      },
+      {
+        "step_id": "14.B",
+        "step_key": [
+          14,
+          "B"
+        ],
+        "stage": "Elevation",
+        "technique": "Windows Management Instrumentation,\nRemote File Copy,\nCredential Dumping,\nObfuscated Files or Information,\nProcess Discovery,\nDeobfuscate/Decode Files or Information",
+        "description": "The attacker then uses the new elevated access to create and execute code within a custom WMI class (T1047) that downloads (T1105) and executes Mimikatz to dump plain-text credentials (T1003), which are parsed, encoded, and stored in the WMI class (T1027). After tracking that the WMI execution has completed (T1057), the attacker reads the plaintext credentials stored within the WMI class (T1140)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1003",
+          "T1027",
+          "T1047",
+          "T1057",
+          "T1105",
+          "T1140"
+        ]
+      },
+      {
+        "step_id": "15.A",
+        "step_key": [
+          15,
+          "A"
+        ],
+        "stage": "Establish Persistence",
+        "technique": "Windows Management Instrumentation Event Subscription,\nSystem Owner/User Discovery",
+        "description": "The attacker establishes a secondary means of persistent access to the victim by creating a WMI event subscription (T1084) to execute a PowerShell payload whenever the current user (T1033) logs in.",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1033",
+          "T1084"
+        ]
+      }
+    ]
+  },
+  "D2-C3": {
+    "day": "day2",
+    "case_name": "Domain Lateral Movement & DC Compromise",
+    "step_range": "16.A - 16.D",
+    "step_count": 4,
+    "declared_step_count": 4,
+    "attack_technique_ids": [
+      "T1018",
+      "T1028",
+      "T1033",
+      "T1078",
+      "T1103",
+      "T1105",
+      "T1106"
+    ],
+    "steps": [
+      {
+        "step_id": "16.A",
+        "step_key": [
+          16,
+          "A"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Remote System Discovery",
+        "description": "The attacker enumerates the environment\u2019s domain controller (T1018)",
+        "source": "UTICA",
+        "target": "NEWYORK",
+        "attack_technique_ids": [
+          "T1018"
+        ]
+      },
+      {
+        "step_id": "16.B",
+        "step_key": [
+          16,
+          "B"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "System Owner/User Discovery,\nExecution through API",
+        "description": "The attacker enumerates the domain\u2019s security identifier (SID) (T1033) via the Windows API (T1106).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1033",
+          "T1106"
+        ]
+      },
+      {
+        "step_id": "16.C",
+        "step_key": [
+          16,
+          "C"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Valid Accounts,\nWindows Remote Management",
+        "description": "Next, the attacker uses the previously dumped credentials (T1078) to create a remote PowerShell session to the domain controller (T1028).",
+        "source": "UTICA",
+        "target": "NEWYORK",
+        "attack_technique_ids": [
+          "T1028",
+          "T1078"
+        ]
+      },
+      {
+        "step_id": "16.D",
+        "step_key": [
+          16,
+          "D"
+        ],
+        "stage": "Lateral Movement",
+        "technique": "Remote File Copy,\nCredential Dumping",
+        "description": "Through this connection, the attacker copies the Mimikatz binary used in Step 14 to the domain controller (T1105) then dumps the hash of the KRBTGT account (T1103).",
+        "source": "UTICA",
+        "target": "NEWYORK",
+        "attack_technique_ids": [
+          "T1103",
+          "T1105"
+        ]
+      }
+    ]
+  },
+  "D2-C4": {
+    "day": "day2",
+    "case_name": "OneDrive Cloud Exfiltration",
+    "step_range": "17.A - 18.A",
+    "step_count": 4,
+    "declared_step_count": 4,
+    "attack_technique_ids": [
+      "T1002",
+      "T1005",
+      "T1027",
+      "T1048",
+      "T1074",
+      "T1102",
+      "T1114"
+    ],
+    "steps": [
+      {
+        "step_id": "17.A",
+        "step_key": [
+          17,
+          "A"
+        ],
+        "stage": "Collection",
+        "technique": "Email Collection\n",
+        "description": "The attacker harvests emails stored in the local email client (T1114)",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1114"
+        ]
+      },
+      {
+        "step_id": "17.B",
+        "step_key": [
+          17,
+          "B"
+        ],
+        "stage": "Collection",
+        "technique": "Data from Local System,\nData Staged",
+        "description": "The attacker collects (T1005) and stages (T1074) a file of interest.",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1005",
+          "T1074"
+        ]
+      },
+      {
+        "step_id": "17.C",
+        "step_key": [
+          17,
+          "C"
+        ],
+        "stage": "Collection",
+        "technique": "Data Compressed,\nObfuscated Files or Information",
+        "description": "The staged file is compressed (T1002) as well as prepended with the magic bytes of the GIF file type (T1027).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1002",
+          "T1027"
+        ]
+      },
+      {
+        "step_id": "18.A",
+        "step_key": [
+          18,
+          "A"
+        ],
+        "stage": "Exfiltration",
+        "technique": "Web Service,\nExfiltration Over Alternative Protocol",
+        "description": "The attacker maps a local drive to an online web service account (T1102) then exfiltrates the previous staged data to this repository (T1048).",
+        "source": "UTICA",
+        "target": "ONEDRIVE",
+        "attack_technique_ids": [
+          "T1048",
+          "T1102"
+        ]
+      }
+    ]
+  },
+  "D2-C5": {
+    "day": "day2",
+    "case_name": "Golden Ticket & Anti-Forensics",
+    "step_range": "19.A - 20.B",
+    "step_count": 5,
+    "declared_step_count": 5,
+    "attack_technique_ids": [
+      "T1028",
+      "T1055",
+      "T1084",
+      "T1085",
+      "T1086",
+      "T1097",
+      "T1107",
+      "T1136"
+    ],
+    "steps": [
+      {
+        "step_id": "19.A",
+        "step_key": [
+          19,
+          "A"
+        ],
+        "stage": "Clean up",
+        "technique": "File Deletion,\nProcess Injection",
+        "description": "The attacker deletes various files (T1107) associated with that access by reflectively loading and executing the Sdelete binary (T1055) within powershell.exe",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1055",
+          "T1107"
+        ]
+      },
+      {
+        "step_id": "19.B",
+        "step_key": [
+          19,
+          "B"
+        ],
+        "stage": "Clean up",
+        "technique": "File Deletion,\nProcess Injection",
+        "description": "The attacker deletes various files (T1107) associated with that access by reflectively loading and executing the Sdelete binary (T1055) within powershell.exe",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1055",
+          "T1107"
+        ]
+      },
+      {
+        "step_id": "19.C",
+        "step_key": [
+          19,
+          "C"
+        ],
+        "stage": "Clean up",
+        "technique": "File Deletion,\nProcess Injection",
+        "description": "The attacker deletes various files (T1107) associated with that access by reflectively loading and executing the Sdelete binary (T1055) within powershell.exe",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1055",
+          "T1107"
+        ]
+      },
+      {
+        "step_id": "20.A",
+        "step_key": [
+          20,
+          "A"
+        ],
+        "stage": "Leverage Persistence",
+        "technique": "Rundll32,\nWindows Management Instrumentation Event Subscription,\nPowerShell",
+        "description": "The original victim is rebooted and the legitimate user logs in, emulating ordinary usage and a passage of time. This activity triggers the previously established persistence mechanisms, namely the execution of the DLL payload (T1085), referenced by the Windows Registry Run key, and the WMI event subscription (T1084), which executes a new PowerShell stager (T1086).",
+        "source": "UTICA",
+        "target": "UTICA",
+        "attack_technique_ids": [
+          "T1084",
+          "T1085",
+          "T1086"
+        ]
+      },
+      {
+        "step_id": "20.B",
+        "step_key": [
+          20,
+          "B"
+        ],
+        "stage": "Leverage Persistence",
+        "technique": "Pass the Ticket,\nWindows Remote Management,\nCreate Account",
+        "description": "The attacker uses the renewed access to generate a Kerberos Golden Ticket (T1097), using materials from the earlier breach, which is used to establish a remote PowerShell session to a new victim (T1028). Through this connection, the attacker creates a new account within the domain (T1136).",
+        "source": "UTICA",
+        "target": "SCRANTON",
+        "attack_technique_ids": [
+          "T1028",
+          "T1097",
+          "T1136"
+        ]
+      }
+    ]
+  }
+}

@@ -2,9 +2,9 @@
   "summary": {
     "case_id": "D1-C5",
     "condition": "C1",
-    "start_time": 1788019128.4407895,
-    "end_time": 1788019128.513319,
-    "duration_seconds": 0.07252955436706543,
+    "start_time": 1788103197.9304159,
+    "end_time": 1788103198.091594,
+    "duration_seconds": 0.1611781120300293,
     "queries_executed": [
       "query_conn",
       "query_dns",
@@ -26,7 +26,7 @@
   "events": [
     {
       "event": "investigation_window",
-      "ts": 1788019128.4408338,
+      "ts": 1788103197.9305074,
       "start_ts": 1588205199.0,
       "end_ts": 1588208799.0,
       "start_iso": "2020-04-30T00:06:39Z",
@@ -35,7 +35,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.440842,
+      "ts": 1788103197.9305265,
       "tool": "query_conn",
       "args": {
         "start_ts": 1588205199.0,
@@ -45,7 +45,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.4461322,
+      "ts": 1788103197.9728599,
       "tool": "query_conn",
       "count": 200,
       "matched_before_limit": 479,
@@ -53,7 +53,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.4461458,
+      "ts": 1788103197.9728808,
       "tool": "query_dns",
       "args": {
         "start_ts": 1588205199.0,
@@ -63,7 +63,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.4611356,
+      "ts": 1788103198.005198,
       "tool": "query_dns",
       "count": 21,
       "matched_before_limit": 21,
@@ -71,7 +71,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.4611452,
+      "ts": 1788103198.0052168,
       "tool": "query_kerberos",
       "args": {
         "start_ts": 1588205199.0,
@@ -81,7 +81,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.4735217,
+      "ts": 1788103198.0326004,
       "tool": "query_kerberos",
       "count": 13,
       "matched_before_limit": 13,
@@ -89,22 +89,22 @@
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.4736369,
+      "ts": 1788103198.0327978,
       "branch": "dce_rpc"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.4736373,
+      "ts": 1788103198.032799,
       "branch": "remote_access"
     },
     {
       "event": "branch_triggered",
-      "ts": 1788019128.4736378,
+      "ts": 1788103198.0328,
       "branch": "smb"
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.473644,
+      "ts": 1788103198.0328126,
       "tool": "query_dce_rpc",
       "args": {
         "start_ts": 1588205199.0,
@@ -114,7 +114,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.486213,
+      "ts": 1788103198.0630207,
       "tool": "query_dce_rpc",
       "count": 57,
       "matched_before_limit": 57,
@@ -122,7 +122,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.4862258,
+      "ts": 1788103198.0630412,
       "tool": "query_smb_files",
       "args": {
         "start_ts": 1588205199.0,
@@ -132,7 +132,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.499383,
+      "ts": 1788103198.0687404,
       "tool": "query_smb_files",
       "count": 6,
       "matched_before_limit": 6,
@@ -140,7 +140,7 @@
     },
     {
       "event": "query_executed",
-      "ts": 1788019128.4993944,
+      "ts": 1788103198.0687668,
       "tool": "query_smb_mapping",
       "args": {
         "start_ts": 1588205199.0,
@@ -150,7 +150,7 @@
     },
     {
       "event": "query_result",
-      "ts": 1788019128.513011,
+      "ts": 1788103198.0912044,
       "tool": "query_smb_mapping",
       "count": 5,
       "matched_before_limit": 5,
@@ -158,7 +158,7 @@
     },
     {
       "event": "rule_fired",
-      "ts": 1788019128.5132172,
+      "ts": 1788103198.0914772,
       "rule_id": "conn-winrm",
       "description": "4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
       "attack_technique": "T1021.006",
@@ -166,12 +166,12 @@
     },
     {
       "event": "dns_reviewed",
-      "ts": 1788019128.5132189,
+      "ts": 1788103198.0914798,
       "count": 21
     },
     {
       "event": "smb_mapping_reviewed",
-      "ts": 1788019128.5132194,
+      "ts": 1788103198.091481,
       "count": 5
     }
   ],

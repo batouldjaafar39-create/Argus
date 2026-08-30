@@ -2,14 +2,16 @@
   "summary": {
     "case_id": "D2-C1",
     "condition": "Argus",
-    "start_time": 1788020302.7292118,
-    "end_time": 1788020416.318311,
-    "duration_seconds": 113.58909916877747,
+    "start_time": 1788108955.9972756,
+    "end_time": 1788109624.8684611,
+    "duration_seconds": 668.871185541153,
     "planning_rounds": 2,
     "analyst_revisions": 0,
-    "zeek_queries": 2,
+    "zeek_queries": 3,
     "tools_queried": [
-      "query_conn"
+      "query_conn",
+      "query_dns",
+      "query_kerberos"
     ],
     "json_retries": 0,
     "tool_call_failures": 0,
@@ -18,139 +20,170 @@
   "events": [
     {
       "event": "planning_round_start",
-      "ts": 1788020302.729231,
+      "ts": 1788108955.9972901,
       "round": 1
     },
     {
       "event": "llm_request",
-      "ts": 1788020302.729738,
+      "ts": 1788108955.9977708,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
-      "prompt_chars": 6761
+      "prompt_chars": 7552
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788020338.1516457,
+      "ts": 1788109032.8831384,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\"action\":\"plan\",\"hypotheses\":[{\"id\":\"H1\",\"statement\":\"Investigate network activity on UTICA within the specified time window.\"}],\"tool_calls\":[{\"tool\":\"query_conn\",\"args\":{\"start_ts\":1588534922,\"end_ts\":1588534922}}],\"follow_up_required\":true,\"follow_up_reason\":\"To identify any network connections on UTICA during the investigation window, we need to query the conn.log file for the specified time frame.\"}"
+      "raw_text": "<think>\n\n</think>\n\n{\"action\":\"plan\",\"hypotheses\":[{\"id\":\"H1\",\"statement\":\"Investigate network activity on UTICA within the one-hour investigation window.\"}],\"tool_calls\":[{\"tool\":\"query_conn\",\"args\":{\"start_ts\":1588316522.0,\"end_ts\":1588320122.0,\"limit\":100}}],\"follow_up_required\":true,\"follow_up_reason\":\"To gather initial evidence of network connections within the specified time window.\"}"
     },
     {
       "event": "plan_created",
-      "ts": 1788020338.1517947,
+      "ts": 1788109032.8833046,
       "round": 1,
       "hypotheses": [
         {
           "id": "H1",
-          "statement": "Investigate network activity on UTICA within the specified time window."
+          "statement": "Investigate network activity on UTICA within the one-hour investigation window."
         }
       ],
       "tool_call_count": 1
     },
     {
       "event": "ledger_result",
-      "ts": 1788020338.169315,
+      "ts": 1788109032.8977623,
       "round": 1,
       "index": 1,
       "evidence_id": "E001",
       "tool": "query_conn",
       "status": "success",
       "error": null,
-      "matched_before_limit": 0,
-      "context_kept_count": 0
+      "matched_before_limit": 805,
+      "context_kept_count": 30
     },
     {
       "event": "planning_round_end",
-      "ts": 1788020338.1693215,
+      "ts": 1788109032.8977683,
       "round": 1,
       "follow_up_required": true
     },
     {
       "event": "planning_round_start",
-      "ts": 1788020338.1693268,
+      "ts": 1788109032.8977733,
       "round": 2
     },
     {
       "event": "llm_request",
-      "ts": 1788020338.1697006,
+      "ts": 1788109032.8984547,
       "phase": "planner",
       "round": 2,
       "attempt": 0,
-      "prompt_chars": 7383
+      "prompt_chars": 13116
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788020382.7331188,
+      "ts": 1788109192.274244,
       "phase": "planner",
       "round": 2,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"plan\",\n  \"hypotheses\": [\n    {\n      \"id\": \"H1\",\n      \"statement\": \"Investigate network connections and traffic related to the suspicious activity on UTICA within the specified time window.\"\n    }\n  ],\n  \"tool_calls\": [\n    {\n      \"tool\": \"query_conn\",\n      \"args\": {\n        \"start_ts\": 1588534922,\n        \"end_ts\": 1588534922\n      }\n    }\n  ],\n  \"follow_up_required\": false,\n  \"follow_up_reason\": \"No additional evidence is genuinely needed as the initial query has been completed and no further investigation is required.\"\n}"
+      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"plan\",\n  \"hypotheses\": [\n    {\n      \"id\": \"H1\",\n      \"statement\": \"Investigate the DNS queries and Kerberos interactions related to the suspicious activity on UTICA.\"\n    }\n  ],\n  \"tool_calls\": [\n    {\n      \"tool\": \"query_dns\",\n      \"args\": {\n        \"start_ts\": 1588316522.0,\n        \"end_ts\": 1588320122.0,\n        \"limit\": 100\n      }\n    },\n    {\n      \"tool\": \"query_kerberos\",\n      \"args\": {\n        \"start_ts\": 1588316522.0,\n        \"end_ts\": 1588320122.0,\n        \"limit\": 100\n      }\n    }\n  ],\n  \"follow_up_required\": true,\n  \"follow_up_reason\": \"To investigate the DNS queries and Kerberos interactions related to the suspicious activity on UTICA.\"\n}"
     },
     {
       "event": "plan_created",
-      "ts": 1788020382.733265,
+      "ts": 1788109192.2744598,
       "round": 2,
       "hypotheses": [
         {
           "id": "H1",
-          "statement": "Investigate network connections and traffic related to the suspicious activity on UTICA within the specified time window."
+          "statement": "Investigate the DNS queries and Kerberos interactions related to the suspicious activity on UTICA."
         }
       ],
-      "tool_call_count": 1
+      "tool_call_count": 2
     },
     {
       "event": "ledger_result",
-      "ts": 1788020382.739516,
+      "ts": 1788109192.2885838,
       "round": 2,
       "index": 1,
       "evidence_id": "E002",
-      "tool": "query_conn",
+      "tool": "query_dns",
       "status": "success",
       "error": null,
-      "matched_before_limit": 0,
-      "context_kept_count": 0
+      "matched_before_limit": 79,
+      "context_kept_count": 28
+    },
+    {
+      "event": "ledger_result",
+      "ts": 1788109192.2913287,
+      "round": 2,
+      "index": 2,
+      "evidence_id": "E003",
+      "tool": "query_kerberos",
+      "status": "success",
+      "error": null,
+      "matched_before_limit": 13,
+      "context_kept_count": 13
     },
     {
       "event": "planning_round_end",
-      "ts": 1788020382.7395246,
+      "ts": 1788109192.291345,
       "round": 2,
-      "follow_up_required": false
+      "follow_up_required": true
     },
     {
       "event": "llm_request",
-      "ts": 1788020382.7396052,
+      "ts": 1788109192.292107,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
-      "prompt_chars": 2387
+      "prompt_chars": 17537
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788020416.317947,
+      "ts": 1788109624.8609822,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"No suspicious activity was detected in the specified time frame [E001].\",\n    \"affected_entities\": [],\n    \"evidence\": [\"E001\"],\n    \"interpretation\": \"The query_conn tool returned zero records, indicating no suspicious activity was found in the specified time frame [E001].\",\n    \"attack_technique_mapping\": [],\n    \"confidence\": \"high\",\n    \"limitations\": \"The investigation was limited to the specific time frame and did not include additional data sources.\"\n  }\n}"
+      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"Suspicious activity detected on host UTICA involving Kerberos and DNS queries, indicating potential unauthorized access or data exfiltration [E001].\",\n    \"affected_entities\": [\n      \"10.0.1.5 [E001]\",\n      \"10.0.0.4 [E001]\",\n      \"UTICA [E001]\",\n      \"array607.prod.do.dsp.mp.microsoft.com [E002]\",\n      \"ctldl.windowsupdate.com [E002]\",\n      \"maps.windows.com [E002]\",\n      \"ocsp.verisign.com [E002]\",\n      \"crl.verisign.com [E002]\",\n      \"UTICA$/DMEVALS.LOCAL [E003]\",\n      \"dschrute/DMEVALS [E003]\",\n      \"dschrute/DMEVALS.LOCAL [E003]\",\n      \"kmalone/dmevals.local [E003]\"\n    ],\n    \"evidence\": [\n      \"E001\",\n      \"E002\",\n      \"E003\"\n    ],\n    \"interpretation\": \"The host UTICA is performing multiple Kerberos TGS requests and DNS queries to external domains, which may indicate an attempt to authenticate or exfiltrate data. The DNS queries to domains like ctldl.windowsupdate.com and maps.windows.com are suspicious as they are associated with Windows Update and Microsoft services, which could be used for data exfiltration or reconnaissance. The Kerberos TGS requests suggest potential unauthorized access or privilege escalation [E001][E002][E003].\",\n    \"attack_technique_mapping\": [\n      \"T1021 - Kerberos Constrained Delegation [E003]\",\n      \"T1003 - Lateral Movement [E003]\",\n      \"T1587 - DNS Query [E002]\"\n    ],\n    \"confidence\": \"medium\",\n    \"limitations\": \"The analysis is based on the provided evidence and may not capture all potential attack vectors or anomalies.\"\n  }\n}"
     },
     {
       "event": "verification",
-      "ts": 1788020416.318235,
+      "ts": 1788109624.8683963,
       "revision": 0,
       "clean": true,
       "violations": []
     }
   ],
   "final_report": {
-    "finding": "No suspicious activity was detected in the specified time frame [E001].",
-    "affected_entities": [],
-    "evidence": [
-      "E001"
+    "finding": "Suspicious activity detected on host UTICA involving Kerberos and DNS queries, indicating potential unauthorized access or data exfiltration [E001].",
+    "affected_entities": [
+      "10.0.1.5 [E001]",
+      "10.0.0.4 [E001]",
+      "UTICA [E001]",
+      "array607.prod.do.dsp.mp.microsoft.com [E002]",
+      "ctldl.windowsupdate.com [E002]",
+      "maps.windows.com [E002]",
+      "ocsp.verisign.com [E002]",
+      "crl.verisign.com [E002]",
+      "UTICA$/DMEVALS.LOCAL [E003]",
+      "dschrute/DMEVALS [E003]",
+      "dschrute/DMEVALS.LOCAL [E003]",
+      "kmalone/dmevals.local [E003]"
     ],
-    "interpretation": "The query_conn tool returned zero records, indicating no suspicious activity was found in the specified time frame [E001].",
-    "attack_technique_mapping": [],
-    "confidence": "high",
-    "limitations": "The investigation was limited to the specific time frame and did not include additional data sources."
+    "evidence": [
+      "E001",
+      "E002",
+      "E003"
+    ],
+    "interpretation": "The host UTICA is performing multiple Kerberos TGS requests and DNS queries to external domains, which may indicate an attempt to authenticate or exfiltrate data. The DNS queries to domains like ctldl.windowsupdate.com and maps.windows.com are suspicious as they are associated with Windows Update and Microsoft services, which could be used for data exfiltration or reconnaissance. The Kerberos TGS requests suggest potential unauthorized access or privilege escalation [E001][E002][E003].",
+    "attack_technique_mapping": [
+      "T1021 - Kerberos Constrained Delegation [E003]",
+      "T1003 - Lateral Movement [E003]",
+      "T1587 - DNS Query [E002]"
+    ],
+    "confidence": "medium",
+    "limitations": "The analysis is based on the provided evidence and may not capture all potential attack vectors or anomalies."
   }
 }

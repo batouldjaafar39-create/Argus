@@ -38,14 +38,20 @@ def build_planner_prompt() -> str:
         "the alert contains an actual IP address. "
         "If the alert contains a timestamp, use that timestamp to constrain the first query to the "
         "investigation window supplied in the alert/context. Do not invent timestamps or IPs. "
+        "IMPORTANT TEMPORAL RULE: Never create a zero-duration investigation window unless the "
+        "alert explicitly specifies a single instant. If the alert provides only an alert timestamp "
+        "and the investigation window is defined as one hour, the investigation window is exactly "
+        "3600 seconds: end_ts = start_ts + 3600. Use the complete window for the query, not only the "
+        "alert instant. Output concrete timestamp values in tool arguments; never output arithmetic "
+        "expressions such as '1588537284+3600'. "
         "Use the smallest set of query arguments necessary to answer the hypothesis. Do NOT copy "
         "uid, rcode, cipher, success, client, service, query, or other record-specific values into "
         "a follow-up query unless that value is explicitly needed as a filter and is present in the "
         "successful Ledger evidence. Prefer time-window and source/destination filters over exact-record "
         "filters. Never fabricate a value merely to make a query more specific. "
         "JSON TYPES ARE STRICT: qtype and rcode are integers; success is a JSON boolean; limit and "
-        "ports are integers; start_ts/end_ts may be ISO timestamps or epoch numbers. Never quote numeric "
-        "or boolean values. For DNS, use qtype 1 for A, 28 for AAAA, 12 for PTR, etc. "
+        "ports are integers; start_ts and end_ts MUST be numeric epoch seconds (JSON numbers, not strings). "
+        "Never quote numeric or boolean values. "
         "If a previous tool call failed, do not treat its evidence ID as evidence. Correct the argument "
         "types and retry the query in the next plan when useful evidence can still be obtained. "
         "Only set follow_up_required=false when no additional successful evidence is genuinely needed."
@@ -99,18 +105,27 @@ def _planner_user_message(
             if start.tzinfo is None:
                 start = start.replace(tzinfo=timezone.utc)
             end = start + timedelta(seconds=3600)
+            start_epoch = start.timestamp()
+            end_epoch = end.timestamp()
             window_note = (
-                "Investigation window: "
-                + start.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-                + " through "
-                + end.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
-                + ". If using start_ts/end_ts, provide these values; the execution layer accepts ISO timestamps and converts them to epoch seconds."
-            )
+                 "MANDATORY INVESTIGATION WINDOW:\n"
+                 f"Start: {start.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')}\n"
+                  f"End: {end.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')}\n"
+                 f"start_ts = {start_epoch}\n"
+                 f"end_ts = {end_epoch}\n"
+                 "This is a one-hour investigation window (3600 seconds). "
+                 "For the first query, use this complete window. "
+                 "NEVER set end_ts equal to start_ts unless the alert explicitly specifies a single instant. "
+                 "start_ts and end_ts MUST be JSON numbers, not strings. "
+                 "NEVER output ISO timestamps for these fields. "
+                 "NEVER output arithmetic expressions such as '1588537419+3600'. "
+                 "Use the concrete numeric values provided above."
+                )
         except ValueError:
             pass
     return (
         f"Planning round {round_number}.\n\nALERT:\n{json.dumps(alert, indent=2)}\n\n"
-        f"{window_note}\n\nLEDGER:\n{json.dumps(ledger.to_dict(max_chars), indent=2)}\n\n"
+        f"{window_note}\n\nLEDGER:\n{json.dumps(ledger.compact_to_dict(max_chars=12000), indent=2)}\n\n"
         "Return one plan JSON object."
     )
 
@@ -120,7 +135,7 @@ def _analyst_user_message(alert: dict[str, Any], ledger: EvidenceLedger, max_cha
         "Prepare the final report.\n\nALERT:\n"
         + json.dumps(alert, indent=2)
         + "\n\nLEDGER:\n"
-        + json.dumps(ledger.to_dict(max_chars), indent=2)
+        + json.dumps(ledger.compact_to_dict(max_chars=12000), indent=2)
         + "\n\nReturn one final_report JSON object."
     )
 
@@ -135,7 +150,7 @@ def _revision_user_message(
         + "\n\nCURRENT REPORT:\n"
         + json.dumps(report, indent=2)
         + "\n\nLEDGER:\n"
-        + json.dumps(ledger.to_dict(max_chars), indent=2)
+        + json.dumps(ledger.compact_to_dict(max_chars=12000), indent=2)
         + "\n\nReturn one corrected final_report JSON object."
     )
 

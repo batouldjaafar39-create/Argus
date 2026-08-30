@@ -1,0 +1,698 @@
+{
+  "D1-C1": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host SCRANTON",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host SCRANTON requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious DNS and network activity detected on host SCRANTON",
+      "affected_entities": [
+        "10.0.1.4",
+        "10.0.0.4",
+        "10.0.1.255"
+      ],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The host SCRANTON has multiple suspicious network connections, including DNS queries and TCP connections to 10.0.0.4, which could indicate malicious activity. However, without further evidence, the exact nature of the activity cannot be determined.",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The evidence is limited to network connections and DNS queries, which may not be sufficient to fully determine the malicious intent."
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration. [E001]",
+      "affected_entities": [
+        "10.0.1.4 [E001]",
+        "10.0.0.4 [E001]",
+        "simplerockbuild.simplerock.lan [E001]",
+        "scranton [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The Zeek logs show multiple connections from 10.0.1.4 to 10.0.0.4, including DNS (UDP) and TCP connections. The DNS queries could be part of reconnaissance or data exfiltration. The lack of DNS records for 'scranton' [E002] might indicate that the DNS queries were not resolved, suggesting potential malicious activity. The TCP connections with services like krb, smb, gssapi, dce_rpc suggest potential exploitation of known vulnerabilities or lateral movement. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided logs and does not include additional context or forensic data."
+    }
+  },
+  "D1-C2": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host SCRANTON",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host SCRANTON requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "No suspicious DNS activity detected",
+      "affected_entities": [],
+      "evidence": [],
+      "interpretation": "The available DNS query data does not show any suspicious activity. The query_conn tool provided connection records, but no DNS queries were found in the DNS query tool results.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The DNS query tool did not return any records, so it is not possible to analyze DNS activity."
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration. [E001]",
+      "affected_entities": [
+        "10.0.1.4 [E001]",
+        "10.0.0.4 [E001]",
+        "simplerockbuild.simplerock.lan [E001]",
+        "scranton [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The Zeek logs show multiple connections from 10.0.1.4 to 10.0.0.4, including DNS (UDP) and TCP connections. The DNS queries could be part of reconnaissance or data exfiltration. The lack of DNS records for 'scranton' [E002] might indicate that the DNS queries were not resolved, suggesting potential malicious activity. The TCP connections with services like krb, smb, gssapi, dce_rpc suggest potential exploitation of known vulnerabilities or lateral movement. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided logs and does not include additional context or forensic data."
+    }
+  },
+  "D1-C3": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host SCRANTON",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host SCRANTON requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious DNS and network activity detected on host SCRANTON",
+      "affected_entities": [
+        "10.0.1.4",
+        "10.0.0.4",
+        "10.0.1.255"
+      ],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The host SCRANTON has multiple suspicious network connections, including DNS queries and TCP connections to 10.0.0.4, which could indicate malicious activity. However, without further evidence, the exact nature of the activity cannot be determined.",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The evidence is limited to network connections and DNS queries, which may not be sufficient to fully determine the malicious intent."
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration. [E001]",
+      "affected_entities": [
+        "10.0.1.4 [E001]",
+        "10.0.0.4 [E001]",
+        "simplerockbuild.simplerock.lan [E001]",
+        "scranton [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The Zeek logs show multiple connections from 10.0.1.4 to 10.0.0.4, including DNS (UDP) and TCP connections. The DNS queries could be part of reconnaissance or data exfiltration. The lack of DNS records for 'scranton' [E002] might indicate that the DNS queries were not resolved, suggesting potential malicious activity. The TCP connections with services like krb, smb, gssapi, dce_rpc suggest potential exploitation of known vulnerabilities or lateral movement. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided logs and does not include additional context or forensic data."
+    }
+  },
+  "D1-C4": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host SCRANTON",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host SCRANTON requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious DNS and network activity detected on host SCRANTON",
+      "affected_entities": [
+        "10.0.1.4",
+        "10.0.0.4",
+        "10.0.1.255"
+      ],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The host SCRANTON has multiple suspicious network connections, including DNS queries and TCP connections to 10.0.0.4, which could indicate malicious activity. However, without further evidence, the exact nature of the activity cannot be determined.",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The evidence is limited to network connections and DNS queries, which may not be sufficient to fully determine the malicious intent."
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration. [E001]",
+      "affected_entities": [
+        "10.0.1.4 [E001]",
+        "10.0.0.4 [E001]",
+        "simplerockbuild.simplerock.lan [E001]",
+        "scranton [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The Zeek logs show multiple connections from 10.0.1.4 to 10.0.0.4, including DNS (UDP) and TCP connections. The DNS queries could be part of reconnaissance or data exfiltration. The lack of DNS records for 'scranton' [E002] might indicate that the DNS queries were not resolved, suggesting potential malicious activity. The TCP connections with services like krb, smb, gssapi, dce_rpc suggest potential exploitation of known vulnerabilities or lateral movement. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided logs and does not include additional context or forensic data."
+    }
+  },
+  "D1-C5": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "NASHUA"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C0XYv11LLkSOaKmcOa', 'ts': 1588206809.274476, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CRTaeg2G66cIB9TRm6', 'ts': 1588206808.214094, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CjqEFp2wB12h7DEGt2', 'ts': 1588206807.77218, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CgFqEH2AArPQ4DLOYf', 'ts': 1588206806.283442, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host NASHUA",
+      "affected_entities": [
+        "NASHUA"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host NASHUA requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the NASHUA host. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious network activity detected on NASHUA involving DNS queries and DCE/RPC/SMB protocol interactions",
+      "affected_entities": [
+        "NASHUA",
+        "10.0.0.4 (DNS server)",
+        "10.0.1.6 (endpoint)",
+        "SMB (port 445)",
+        "DCE/RPC (port 138)"
+      ],
+      "evidence": [
+        "UDP DNS query to 10.0.0.4 (port 53) from 10.0.1.6",
+        "TCP connection to SMB (port 445) from 10.0.1.6",
+        "DCE/RPC traffic detected on port 138",
+        "Multiple DNS queries (UDP) to 10.0.0.4"
+      ],
+      "interpretation": "The repeated DNS queries and DCE/RPC/SMB interactions suggest potential reconnaissance or credential harvesting activity. The SMB connection to port 445 could indicate an attempt to exploit Windows SMB vulnerabilities or exfiltrate data.",
+      "attack_technique_mapping": [
+        "T1021 (Lateral Movement - SMB)",
+        "T1003 (Credential Access - DCE/RPC)"
+      ],
+      "confidence": "medium",
+      "limitations": "No domain names or specific malicious payloads identified in DNS queries"
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host NASHUA, involving multiple DNS and TCP connections. The activity includes DNS queries and a potential DCE-RPC attack. [E001]",
+      "affected_entities": [
+        "10.0.1.6 [E001]",
+        "10.0.0.4 [E001]",
+        "bobs.bigwheel.local [E001]"
+      ],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The Zeek logs (E001) show multiple network connections from 10.0.1.6 to 10.0.0.4, including DNS UDP queries and a TCP connection with DCE-RPC service. The failed query_dns tool (E002) indicates an error in processing DNS queries, which may suggest an attempt to query DNS records or a misconfiguration. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The query_dns tool failed, so no detailed DNS analysis is available. The Zeek logs only provide partial context, and further investigation is needed to confirm the nature of the DCE-RPC connection."
+    }
+  },
+  "D1-C6": {
+    "C1": {
+      "finding": "conn-winrm: 4 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985].",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'C69FpH1T94ougWFTdb', 'ts': 1588206809.289121, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CAJolD1twy3OPmoKa3', 'ts': 1588206808.228626, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CWHEjpiltZznVrMaa', 'ts': 1588206807.786571, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CGNgVO1OlaEMzjq5A3', 'ts': 1588206806.297114, 'id_orig_h': '10.0.1.4', 'id_resp_h': '10.0.1.6', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006"
+      ],
+      "confidence": "medium",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity was flagged on the host SCRANTON",
+      "affected_entities": [
+        "SCRANTON"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host SCRANTON requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the host SCRANTON. However, the specific nature of the activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the suspicious activity, making it difficult to determine the exact nature or origin of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious DNS and network activity on SCRANTON",
+      "affected_entities": [
+        "10.0.1.4",
+        "10.0.0.4",
+        "10.0.1.255",
+        "10.0.0.4",
+        "10.0.1.4"
+      ],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "Multiple suspicious network connections and DNS queries from SCRANTON host",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "Insufficient evidence to confirm malicious intent"
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host SCRANTON, including multiple DNS and TCP connections. The activity suggests potential reconnaissance or data exfiltration. [E001]",
+      "affected_entities": [
+        "10.0.1.4 [E001]",
+        "10.0.0.4 [E001]",
+        "simplerockbuild.simplerock.lan [E001]",
+        "scranton [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The Zeek logs show multiple connections from 10.0.1.4 to 10.0.0.4, including DNS (UDP) and TCP connections. The DNS queries could be part of reconnaissance or data exfiltration. The lack of DNS records for 'scranton' [E002] might indicate that the DNS queries were not resolved, suggesting potential malicious activity. The TCP connections with services like krb, smb, gssapi, dce_rpc suggest potential exploitation of known vulnerabilities or lateral movement. [E001]",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided logs and does not include additional context or forensic data."
+    }
+  },
+  "D2-C1": {
+    "C1": {
+      "finding": "No fixed detection rule fired for this host's Zeek evidence. This does not rule out compromise -- C1's rule set only covers a fixed list of structural lateral-movement/Kerberos abuse indicators, not the full range of possible activity.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity flagged on host UTICA requiring investigation.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host UTICA requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the UTICA host, which needs to be investigated further. However, the specific nature of the suspicious activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the nature of the suspicious activity, making it difficult to determine the exact cause or method of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious SMB and HTTPS traffic detected from internal host UTICA",
+      "affected_entities": [
+        "UTICA",
+        "10.0.1.5",
+        "10.0.0.4",
+        "192.168.0.4"
+      ],
+      "evidence": [
+        "TCP connection to 10.0.0.4:445 (SMB/krb/gssapi)",
+        "UDP DNS query to 10.0.0.4:53",
+        "Multiple HTTPS connections to 192.168.0.4:443"
+      ],
+      "interpretation": "The SMB protocol traffic (port 445) suggests potential exploitation of SMB vulnerabilities (e.g., EternalBlue). The multiple HTTPS connections (port 443) could indicate data exfiltration or C2 communication. The DNS query may relate to domain generation algorithms or C2 server resolution.",
+      "attack_technique_mapping": [
+        "T1021: SMB Protocol Exploit",
+        "T1011: Lateral Movement"
+      ],
+      "confidence": "medium",
+      "limitations": "No direct evidence of malicious payload execution or user interaction"
+    },
+    "C4": {
+      "finding": "Investigation did not complete normally.",
+      "affected_entities": [],
+      "evidence": [],
+      "interpretation": "No evidence-grounded interpretation was finalized.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "Planner failed: llm_call_failure"
+    }
+  },
+  "D2-C2": {
+    "C1": {
+      "finding": "No fixed detection rule fired for this host's Zeek evidence. This does not rule out compromise -- C1's rule set only covers a fixed list of structural lateral-movement/Kerberos abuse indicators, not the full range of possible activity.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity flagged on host UTICA requiring investigation.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host UTICA requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the UTICA host, which needs to be investigated further. However, the specific nature of the suspicious activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the nature of the suspicious activity, making it difficult to determine the exact cause or method of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious SSL connections from 10.0.1.5 to 192.168.0.4",
+      "affected_entities": [
+        "10.0.1.5",
+        "192.168.0.4",
+        "10.0.0.4",
+        "NEWYORK.dmevals.local",
+        "SCRANTON"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "Multiple SSL connections with repeated port 443 and a Kerberos connection to 10.0.0.4 suggest potential malicious activity",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "Insufficient evidence to confirm malicious intent without further analysis"
+    },
+    "C4": {
+      "finding": "Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections [E001] and DNS queries to Microsoft-related domains [E002]. The activity suggests potential reconnaissance or data exfiltration [E001].",
+      "affected_entities": [
+        "10.0.1.5 [E001]",
+        "192.168.0.4 [E001]",
+        "v10.events.data.microsoft.com [E002]",
+        "teams.microsoft.com [E002]",
+        "login.microsoftonline.com [E002]"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4 [E001], which is likely a server, and performing DNS queries to Microsoft-related domains [E002]. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data [E001].",
+      "attack_technique_mapping": [
+        "T1041 - Discovery of internal network - [E001] (multiple SSL/TCP connections to 192.168.0.4)"
+      ],
+      "confidence": "medium",
+      "limitations": "The analysis is based on the provided evidence, and further investigation is required to confirm the intent and nature of the activity."
+    }
+  },
+  "D2-C3": {
+    "C1": {
+      "finding": "conn-winrm: 9 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985]. kerberos-auth-failure: 10 failed Kerberos authentication exchange(s) observed.",
+      "affected_entities": [
+        "NEWYORK"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'CgFnQL2S08ECLnAIrc', 'ts': 1588317112.463299, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'ChVaKU3fZtvwBoAj15', 'ts': 1588317206.56029, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CDEU2O2pG46yNTMdb9', 'ts': 1588317111.380307, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CVcdtyR4Lh5hPUBF9', 'ts': 1588317206.572302, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CBXRlmU0GnM02l3rl', 'ts': 1588317112.20467, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[kerberos-auth-failure] {'uid': 'CaJPqD1eSDHkaTOPz2', 'ts': 1588317848.957557, 'client': None, 'service': 'DNS/prisoner.iana.org', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'C1qoZA4YHwQZtc8aNg', 'ts': 1588317882.442715, 'client': None, 'service': 'cifs/DMEVALS.LOCAL', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CALtIP2Adva01hujaa', 'ts': 1588318171.514519, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CpcSMt4QJMG2lxqr0h', 'ts': 1588318171.536742, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CUyRyePXU7ZplZBKl', 'ts': 1588318171.541926, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006",
+        "T1558"
+      ],
+      "confidence": "high",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity flagged on host NEWYORK",
+      "affected_entities": [
+        "NEWYORK"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host NEWYORK requiring investigation."
+      ],
+      "interpretation": "The system host NEWYORK has been flagged for suspicious activity, indicating potential security threats or unauthorized access. Further investigation is required to determine the nature and scope of the suspicious activity.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "No additional evidence or context is available to determine the specific nature of the suspicious activity. The alert does not provide details about the type of activity, involved entities, or potential threats."
+    },
+    "C3": {
+      "finding": "Multiple DNS queries from 10.0.1.5 to 10.0.0.4",
+      "affected_entities": [
+        "10.0.1.5",
+        "10.0.0.4"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The host 10.0.1.5 initiated multiple UDP DNS queries to 10.0.0.4",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "Insufficient data to determine malicious intent"
+    },
+    "C4": {
+      "finding": "No suspicious activity was detected on the host NEWYORK during the specified time frame [E001].",
+      "affected_entities": [],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The query_conn tool was used to check for suspicious activity on the host NEWYORK, but no records were found [E001].",
+      "attack_technique_mapping": [],
+      "confidence": "high",
+      "limitations": "The investigation did not find any evidence of suspicious activity, so no attack techniques could be mapped."
+    }
+  },
+  "D2-C4": {
+    "C1": {
+      "finding": "No fixed detection rule fired for this host's Zeek evidence. This does not rule out compromise -- C1's rule set only covers a fixed list of structural lateral-movement/Kerberos abuse indicators, not the full range of possible activity.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity flagged on host UTICA requiring investigation.",
+      "affected_entities": [
+        "UTICA"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host UTICA requiring investigation."
+      ],
+      "interpretation": "The system indicates that there may be some unusual or potentially malicious activity on the UTICA host, which needs to be investigated further. However, the specific nature of the suspicious activity is not detailed in the alert.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "The alert does not provide specific details about the nature of the suspicious activity, making it difficult to determine the exact cause or method of the activity."
+    },
+    "C3": {
+      "finding": "Suspicious SSL connections to 192.168.0.4 from 10.0.1.5",
+      "affected_entities": [
+        "10.0.1.5",
+        "192.168.0.4"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "Multiple SSL connections to a potential internal server from a single host, with one connection lasting over 10 seconds",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "Insufficient evidence to confirm malicious intent"
+    },
+    "C4": {
+      "finding": "No suspicious activity was detected in the specified time frame [E001].",
+      "affected_entities": [],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The query_conn tool returned zero records, indicating no suspicious activity was found in the specified time frame [E001].",
+      "attack_technique_mapping": [],
+      "confidence": "high",
+      "limitations": "The investigation was limited to the specific time frame and did not include additional data sources."
+    }
+  },
+  "D2-C5": {
+    "C1": {
+      "finding": "conn-winrm: 9 connection(s) observed to Windows Remote Management (WinRM), TCP port(s) [5985]. kerberos-auth-failure: 10 failed Kerberos authentication exchange(s) observed.",
+      "affected_entities": [
+        "NEWYORK"
+      ],
+      "evidence": [
+        "[conn-winrm] {'uid': 'CgFnQL2S08ECLnAIrc', 'ts': 1588317112.463299, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'ChVaKU3fZtvwBoAj15', 'ts': 1588317206.56029, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CDEU2O2pG46yNTMdb9', 'ts': 1588317111.380307, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CVcdtyR4Lh5hPUBF9', 'ts': 1588317206.572302, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[conn-winrm] {'uid': 'CBXRlmU0GnM02l3rl', 'ts': 1588317112.20467, 'id_orig_h': '10.0.1.5', 'id_resp_h': '10.0.0.4', 'id_resp_p': 5985, 'proto': 'tcp', 'service': None}",
+        "[kerberos-auth-failure] {'uid': 'CaJPqD1eSDHkaTOPz2', 'ts': 1588317848.957557, 'client': None, 'service': 'DNS/prisoner.iana.org', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'C1qoZA4YHwQZtc8aNg', 'ts': 1588317882.442715, 'client': None, 'service': 'cifs/DMEVALS.LOCAL', 'error_msg': 'KDC_ERR_S_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CALtIP2Adva01hujaa', 'ts': 1588318171.514519, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CpcSMt4QJMG2lxqr0h', 'ts': 1588318171.536742, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}",
+        "[kerberos-auth-failure] {'uid': 'CUyRyePXU7ZplZBKl', 'ts': 1588318171.541926, 'client': None, 'service': 'scranton$', 'error_msg': 'KDC_ERR_C_PRINCIPAL_UNKNOWN'}"
+      ],
+      "interpretation": "This report was produced by a fixed rule set applied mechanically to Zeek evidence. No adaptive reasoning or LLM-generated investigation decisions were used.",
+      "attack_technique_mapping": [
+        "T1021.006",
+        "T1558"
+      ],
+      "confidence": "high",
+      "limitations": "C1 is a non-adaptive deterministic baseline. Zeek evidence is restricted to a fixed investigation window beginning at the initial alert timestamp. C1 only checks the predefined rules in src/C1/rules.py and cannot adapt its investigation strategy to new evidence."
+    },
+    "C2": {
+      "finding": "Suspicious activity flagged on host NEWYORK",
+      "affected_entities": [
+        "NEWYORK"
+      ],
+      "evidence": [
+        "Suspicious activity flagged on host NEWYORK requiring investigation."
+      ],
+      "interpretation": "The system host NEWYORK has been flagged for suspicious activity, indicating potential security threats or unauthorized access. Further investigation is required to determine the nature and scope of the suspicious activity.",
+      "attack_technique_mapping": [],
+      "confidence": "low",
+      "limitations": "No additional evidence or context is available to determine the specific nature of the suspicious activity. The alert does not provide details about the type of activity, involved entities, or potential threats."
+    },
+    "C3": {
+      "finding": "Multiple DNS queries from 10.0.1.5 to 10.0.0.4",
+      "affected_entities": [
+        "10.0.1.5",
+        "10.0.0.4"
+      ],
+      "evidence": [
+        "E001",
+        "E002"
+      ],
+      "interpretation": "The host 10.0.1.5 initiated multiple UDP DNS queries to 10.0.0.4",
+      "attack_technique_mapping": [],
+      "confidence": "medium",
+      "limitations": "Insufficient data to determine malicious intent"
+    },
+    "C4": {
+      "finding": "No suspicious activity was detected on the host NEWYORK during the specified time frame [E001].",
+      "affected_entities": [],
+      "evidence": [
+        "E001"
+      ],
+      "interpretation": "The query_conn tool was used to check for suspicious activity on the host NEWYORK, but no records were found [E001].",
+      "attack_technique_mapping": [],
+      "confidence": "high",
+      "limitations": "The investigation did not find any evidence of suspicious activity, so no attack techniques could be mapped."
+    }
+  }
+}
