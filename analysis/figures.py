@@ -9,14 +9,14 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 SCORES_PATH = DATA_DIR / "scores.csv"
 FIG_DIR = Path(__file__).resolve().parent / "figures"
 
-CONDITIONS = ["C1", "C2", "C3", "C4"]
+CONDITIONS = ["C1", "C2", "C3", "Argus"]
 CONDITION_LABELS = {
     "C1": "C1\n(Zeek rules)",
     "C2": "C2\n(LLM-only)",
     "C3": "C3\n(fixed pipeline)",
-    "C4": "C4\n(Argus)",
+    "Argus": "Argus\n(ours)",
 }
-CONDITION_COLORS = {"C1": "#6b7280", "C2": "#f59e0b", "C3": "#3b82f6", "C4": "#16a34a"}
+CONDITION_COLORS = {"C1": "#6b7280", "C2": "#f59e0b", "C3": "#3b82f6", "Argus": "#16a34a"}
 
 MIN_N_FOR_PLOT = 3  # below this a box/strip plot is misleading -- skip and warn
 

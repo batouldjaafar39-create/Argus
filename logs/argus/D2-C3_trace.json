@@ -1,10 +1,10 @@
 {
   "summary": {
-    "case_id": "D2-C3",
+    "case_id": "D2-C2",
     "condition": "Argus",
-    "start_time": 1788109710.6936176,
-    "end_time": 1788110453.3997064,
-    "duration_seconds": 742.7060887813568,
+    "start_time": 1788023923.8072343,
+    "end_time": 1788024849.1707246,
+    "duration_seconds": 625.3634903430939,
     "planning_rounds": 2,
     "analyst_revisions": 1,
     "zeek_queries": 2,
@@ -19,176 +19,174 @@
   "events": [
     {
       "event": "planning_round_start",
-      "ts": 1788109710.6936445,
+      "ts": 1788023923.8072681,
       "round": 1
     },
     {
       "event": "llm_request",
-      "ts": 1788109710.6944501,
+      "ts": 1788023923.8081229,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
-      "prompt_chars": 7556
+      "prompt_chars": 6761
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788109786.7496543,
+      "ts": 1788023961.1517868,
       "phase": "planner",
       "round": 1,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"plan\",\n  \"hypotheses\": [\n    {\n      \"id\": \"H1\",\n      \"statement\": \"Investigate network connections and activities on the host NEWYORK during the one-hour investigation window starting at 2020-05-01T07:03:39Z and ending at 2020-05-01T08:03:39Z.\"\n    }\n  ],\n  \"tool_calls\": [\n    {\n      \"tool\": \"query_conn\",\n      \"args\": {\n        \"start_ts\": 1588316619.0,\n        \"end_ts\": 1588320219.0,\n        \"limit\": 100\n      }\n    }\n  ],\n  \"follow_up_required\": true,\n  \"follow_up_reason\": \"To gather evidence of network connections and activities during the investigation window.\"\n}"
+      "raw_text": "<think>\n\n</think>\n\n{\"action\":\"plan\",\"hypotheses\":[{\"id\":\"H1\",\"statement\":\"Investigate network connections and DNS queries related to the suspicious activity on UTICA within the specified time window.\"}],\"tool_calls\":[{\"tool\":\"query_conn\",\"args\":{\"start_ts\":1588537284,\"end_ts\":1588537284+3600}}],\"follow_up_required\":true,\"follow_up_reason\":\"To identify any network connections that may be related to the suspicious activity on UTICA within the specified time window.\"}"
+    },
+    {
+      "event": "invalid_planner_action",
+      "ts": 1788023961.15195,
+      "round": 1,
+      "parsed": {
+        "id": "H1",
+        "statement": "Investigate network connections and DNS queries related to the suspicious activity on UTICA within the specified time window."
+      }
+    },
+    {
+      "event": "planning_round_start",
+      "ts": 1788023961.1519814,
+      "round": 2
+    },
+    {
+      "event": "llm_request",
+      "ts": 1788023961.1525974,
+      "phase": "planner",
+      "round": 2,
+      "attempt": 0,
+      "prompt_chars": 13762
+    },
+    {
+      "event": "llm_response_raw",
+      "ts": 1788024086.4672987,
+      "phase": "planner",
+      "round": 2,
+      "attempt": 0,
+      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"plan\",\n  \"hypotheses\": [\n    {\n      \"id\": \"H1\",\n      \"statement\": \"Investigate network connections and DNS queries related to the suspicious activity on UTICA within the specified time window.\"\n    }\n  ],\n  \"tool_calls\": [\n    {\n      \"tool\": \"query_conn\",\n      \"args\": {\n        \"start_ts\": \"2020-05-01T07:21:24Z\",\n        \"end_ts\": \"2020-05-01T08:21:24Z\",\n        \"limit\": 100\n      }\n    },\n    {\n      \"tool\": \"query_dns\",\n      \"args\": {\n        \"start_ts\": \"2020-05-01T07:21:24Z\",\n        \"end_ts\": \"2020-05-01T08:21:24Z\",\n        \"limit\": 100\n      }\n    }\n  ],\n  \"follow_up_required\": true,\n  \"follow_up_reason\": \"To gather evidence of network connections and DNS queries that may be related to the suspicious activity on UTICA within the specified time window.\"\n}"
     },
     {
       "event": "plan_created",
-      "ts": 1788109786.7498724,
-      "round": 1,
+      "ts": 1788024086.4675179,
+      "round": 2,
       "hypotheses": [
         {
           "id": "H1",
-          "statement": "Investigate network connections and activities on the host NEWYORK during the one-hour investigation window starting at 2020-05-01T07:03:39Z and ending at 2020-05-01T08:03:39Z."
+          "statement": "Investigate network connections and DNS queries related to the suspicious activity on UTICA within the specified time window."
         }
       ],
-      "tool_call_count": 1
+      "tool_call_count": 2
     },
     {
       "event": "ledger_result",
-      "ts": 1788109786.764698,
-      "round": 1,
+      "ts": 1788024086.5359235,
+      "round": 2,
       "index": 1,
       "evidence_id": "E001",
       "tool": "query_conn",
       "status": "success",
       "error": null,
-      "matched_before_limit": 314,
-      "context_kept_count": 31
-    },
-    {
-      "event": "planning_round_end",
-      "ts": 1788109786.7647076,
-      "round": 1,
-      "follow_up_required": true
-    },
-    {
-      "event": "planning_round_start",
-      "ts": 1788109786.7647166,
-      "round": 2
-    },
-    {
-      "event": "llm_request",
-      "ts": 1788109786.7658682,
-      "phase": "planner",
-      "round": 2,
-      "attempt": 0,
-      "prompt_chars": 13066
-    },
-    {
-      "event": "llm_response_raw",
-      "ts": 1788109955.3845613,
-      "phase": "planner",
-      "round": 2,
-      "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"plan\",\n  \"hypotheses\": [\n    {\n      \"id\": \"H1\",\n      \"statement\": \"Investigate the DNS queries made by the host 10.0.1.5 to 10.0.0.4 during the one-hour investigation window.\"\n    }\n  ],\n  \"tool_calls\": [\n    {\n      \"tool\": \"query_dns\",\n      \"args\": {\n        \"src_ip\": \"10.0.1.5\",\n        \"dst_ip\": \"10.0.0.4\",\n        \"start_ts\": 1588316619.0,\n        \"end_ts\": 1588320219.0,\n        \"limit\": 100\n      }\n    }\n  ],\n  \"follow_up_required\": true,\n  \"follow_up_reason\": \"To further investigate the DNS queries made by the host 10.0.1.5 to 10.0.0.4 during the one-hour investigation window.\"\n}"
-    },
-    {
-      "event": "plan_created",
-      "ts": 1788109955.3847868,
-      "round": 2,
-      "hypotheses": [
-        {
-          "id": "H1",
-          "statement": "Investigate the DNS queries made by the host 10.0.1.5 to 10.0.0.4 during the one-hour investigation window."
-        }
-      ],
-      "tool_call_count": 1
+      "matched_before_limit": 388,
+      "context_kept_count": 11
     },
     {
       "event": "ledger_result",
-      "ts": 1788109955.3983364,
+      "ts": 1788024086.5719955,
       "round": 2,
-      "index": 1,
+      "index": 2,
       "evidence_id": "E002",
       "tool": "query_dns",
       "status": "success",
       "error": null,
-      "matched_before_limit": 118,
-      "context_kept_count": 28
+      "matched_before_limit": 14,
+      "context_kept_count": 9
     },
     {
       "event": "planning_round_end",
-      "ts": 1788109955.3983588,
+      "ts": 1788024086.5720084,
       "round": 2,
       "follow_up_required": true
     },
     {
       "event": "llm_request",
-      "ts": 1788109955.3989592,
+      "ts": 1788024086.5740488,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
-      "prompt_chars": 13292
+      "prompt_chars": 19247
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788110191.657325,
+      "ts": 1788024443.9071844,
       "phase": "analyst",
       "round": 0,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"Suspicious DNS activity detected on host NEWYORK [E001].\",\n    \"affected_entities\": [\"10.0.1.5 [E001]\", \"10.0.0.4 [E001]\"],\n    \"evidence\": [\"E001\", \"E002\"],\n    \"interpretation\": \"The host NEWYORK (10.0.1.5) is performing multiple DNS queries to external domains, including ctldl.windowsupdate.com, arc.msn.com, ocsp.verisign.com, and crl.verisign.com. These queries are likely related to software updates or certificate validation, but the frequency and volume of queries suggest potential malicious activity. The DNS queries are being resolved by the DNS server at 10.0.0.4, which is a legitimate internal DNS server.\",\n    \"attack_technique_mapping\": [],\n    \"confidence\": \"medium\",\n    \"limitations\": \"The analysis is based on the provided evidence, and further investigation is required to determine the intent behind the DNS queries.\"\n  }\n}"
+      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections and DNS queries to Microsoft-related domains. The activity suggests potential reconnaissance or data exfiltration.\",\n    \"affected_entities\": [\n      \"10.0.1.5 [E001]\",\n      \"192.168.0.4 [E001]\",\n      \"v10.events.data.microsoft.com [E002]\",\n      \"teams.microsoft.com [E002]\",\n      \"login.microsoftonline.com [E002]\"\n    ],\n    \"evidence\": [\n      \"E001\",\n      \"E002\"\n    ],\n    \"interpretation\": \"The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4, which is likely a server, and performing DNS queries to Microsoft-related domains. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data.\",\n    \"attack_technique_mapping\": [\n      \"T1041 - Discovery of internal network - [E001] (multiple SSL/TCP connections to 192.168.0.4)\"\n    ],\n    \"confidence\": \"medium\",\n    \"limitations\": \"The analysis is based on the provided evidence, and further investigation is required to confirm the intent and nature of the activity.\"\n  }\n}"
     },
     {
       "event": "verification",
-      "ts": 1788110191.6620224,
+      "ts": 1788024443.907712,
       "revision": 0,
       "clean": false,
       "violations": [
-        "Field 'interpretation' contains a factual statement without an [E###] citation: 'The host NEWYORK (10.0.1.5) is performing multiple DNS queries to external domains, including ctldl.windowsupdate.com, arc.msn.com, ocsp.verisign.com, and crl.verisign.com. These queries are likely related to software updates or certificate validation, but the frequency and volume of queries suggest potential malicious activity. The DNS queries are being resolved by the DNS server at 10.0.0.4, which is a legitimate internal DNS server.'"
+        "Field 'finding' contains a factual statement without an [E###] citation: 'Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections and DNS queries to Microsoft-related domains. The activity suggests potential reconnaissance or data exfiltration.'",
+        "Field 'interpretation' contains a factual statement without an [E###] citation: 'The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4, which is likely a server, and performing DNS queries to Microsoft-related domains. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data.'"
       ]
     },
     {
       "event": "analyst_revision",
-      "ts": 1788110191.6620286,
+      "ts": 1788024443.9077156,
       "revision": 1,
       "violations": [
-        "Field 'interpretation' contains a factual statement without an [E###] citation: 'The host NEWYORK (10.0.1.5) is performing multiple DNS queries to external domains, including ctldl.windowsupdate.com, arc.msn.com, ocsp.verisign.com, and crl.verisign.com. These queries are likely related to software updates or certificate validation, but the frequency and volume of queries suggest potential malicious activity. The DNS queries are being resolved by the DNS server at 10.0.0.4, which is a legitimate internal DNS server.'"
+        "Field 'finding' contains a factual statement without an [E###] citation: 'Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections and DNS queries to Microsoft-related domains. The activity suggests potential reconnaissance or data exfiltration.'",
+        "Field 'interpretation' contains a factual statement without an [E###] citation: 'The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4, which is likely a server, and performing DNS queries to Microsoft-related domains. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data.'"
       ]
     },
     {
       "event": "llm_request",
-      "ts": 1788110191.663277,
+      "ts": 1788024443.9084835,
       "phase": "analyst_revision",
       "round": 1,
       "attempt": 0,
-      "prompt_chars": 14572
+      "prompt_chars": 21059
     },
     {
       "event": "llm_response_raw",
-      "ts": 1788110453.3988473,
+      "ts": 1788024849.1700206,
       "phase": "analyst_revision",
       "round": 1,
       "attempt": 0,
-      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"Suspicious DNS activity detected on host NEWYORK [E001].\",\n    \"affected_entities\": [\n      \"10.0.1.5 [E001]\",\n      \"10.0.0.4 [E001]\"\n    ],\n    \"evidence\": [\n      \"E001\",\n      \"E002\"\n    ],\n    \"interpretation\": \"The host NEWYORK (10.0.1.5) is performing multiple DNS queries to external domains, including ctldl.windowsupdate.com [E002], arc.msn.com [E002], ocsp.verisign.com [E002], and crl.verisign.com [E002]. These queries are likely related to software updates or certificate validation, but the frequency and volume of queries suggest potential malicious activity. The DNS queries are being resolved by the DNS server at 10.0.0.4, which is a legitimate internal DNS server [E001].\",\n    \"attack_technique_mapping\": [],\n    \"confidence\": \"medium\",\n    \"limitations\": \"The analysis is based on the provided evidence, and further investigation is required to determine the intent behind the DNS queries.\"\n  }\n}"
+      "raw_text": "<think>\n\n</think>\n\n{\n  \"action\": \"final_report\",\n  \"report\": {\n    \"finding\": \"Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections [E001] and DNS queries to Microsoft-related domains [E002]. The activity suggests potential reconnaissance or data exfiltration [E001].\",\n    \"affected_entities\": [\n      \"10.0.1.5 [E001]\",\n      \"192.168.0.4 [E001]\",\n      \"v10.events.data.microsoft.com [E002]\",\n      \"teams.microsoft.com [E002]\",\n      \"login.microsoftonline.com [E002]\"\n    ],\n    \"evidence\": [\n      \"E001\",\n      \"E002\"\n    ],\n    \"interpretation\": \"The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4 [E001], which is likely a server, and performing DNS queries to Microsoft-related domains [E002]. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data [E001].\",\n    \"attack_technique_mapping\": [\n      \"T1041 - Discovery of internal network - [E001] (multiple SSL/TCP connections to 192.168.0.4)\"\n    ],\n    \"confidence\": \"medium\",\n    \"limitations\": \"The analysis is based on the provided evidence, and further investigation is required to confirm the intent and nature of the activity.\"\n  }\n}"
     },
     {
       "event": "verification",
-      "ts": 1788110453.3996518,
+      "ts": 1788024849.1706903,
       "revision": 1,
       "clean": true,
       "violations": []
     }
   ],
   "final_report": {
-    "finding": "Suspicious DNS activity detected on host NEWYORK [E001].",
+    "finding": "Suspicious network activity detected on host UTICA, involving multiple SSL/TCP connections [E001] and DNS queries to Microsoft-related domains [E002]. The activity suggests potential reconnaissance or data exfiltration [E001].",
     "affected_entities": [
       "10.0.1.5 [E001]",
-      "10.0.0.4 [E001]"
+      "192.168.0.4 [E001]",
+      "v10.events.data.microsoft.com [E002]",
+      "teams.microsoft.com [E002]",
+      "login.microsoftonline.com [E002]"
     ],
     "evidence": [
       "E001",
       "E002"
     ],
-    "interpretation": "The host NEWYORK (10.0.1.5) is performing multiple DNS queries to external domains, including ctldl.windowsupdate.com [E002], arc.msn.com [E002], ocsp.verisign.com [E002], and crl.verisign.com [E002]. These queries are likely related to software updates or certificate validation, but the frequency and volume of queries suggest potential malicious activity. The DNS queries are being resolved by the DNS server at 10.0.0.4, which is a legitimate internal DNS server [E001].",
-    "attack_technique_mapping": [],
+    "interpretation": "The host UTICA is initiating multiple SSL/TCP connections to 192.168.0.4 [E001], which is likely a server, and performing DNS queries to Microsoft-related domains [E002]. This could indicate reconnaissance, data exfiltration, or a potential breach. The repeated SSL/TCP connections and DNS queries to Microsoft domains suggest a possible attempt to gather information or exfiltrate data [E001].",
+    "attack_technique_mapping": [
+      "T1041 - Discovery of internal network - [E001] (multiple SSL/TCP connections to 192.168.0.4)"
+    ],
     "confidence": "medium",
-    "limitations": "The analysis is based on the provided evidence, and further investigation is required to determine the intent behind the DNS queries."
+    "limitations": "The analysis is based on the provided evidence, and further investigation is required to confirm the intent and nature of the activity."
   }
 }

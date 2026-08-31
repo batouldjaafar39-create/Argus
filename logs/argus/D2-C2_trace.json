@@ -4,7 +4,7 @@
     "condition": "Argus",
     "start_time": 1788023923.8072343,
     "end_time": 1788024849.1707246,
-    "duration_seconds": 925.3634903430939,
+    "duration_seconds": 625.3634903430939,
     "planning_rounds": 2,
     "analyst_revisions": 1,
     "zeek_queries": 2,
