@@ -199,3 +199,5 @@ This repository is a **research prototype**, not a production SOC platform. The 
 ## Citation
 
 If you use this repository or build on the experiment, please cite the associated research work.
+DOI: https://doi.org/10.5281/zenodo.22259143
+ORCID: https://orcid.org/0009-0009-7285-2994
